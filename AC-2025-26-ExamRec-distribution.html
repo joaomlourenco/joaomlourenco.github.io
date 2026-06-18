@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AC 2025-26 (TP2) — Distribuição de Salas / Room Allocation</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --accent: #3b82f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Language Switcher with Flags */
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .lang-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            color: var(--text-muted);
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn svg {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            object-fit: cover;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .lang-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Search Controls */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 3rem auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.85rem 1.25rem;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Grid Layout */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Card Layout */
+        .room-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .room-header {
+            background-color: var(--primary-light);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .room-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .room-count {
+            font-size: 0.85rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .room-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .room-body {
+            padding: 0.5rem 0;
+            flex-grow: 1;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Student List Styling */
+        .student-row {
+            display: flex;
+            align-items: center;
+            padding: 0.65rem 1.5rem;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+            transition: background-color 0.15s ease;
+        }
+
+        .student-row:last-child {
+            border-bottom: none;
+        }
+
+        .student-row:hover {
+            background-color: var(--bg-color);
+        }
+
+        .student-id {
+            font-family: monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            width: 75px;
+            flex-shrink: 0;
+        }
+
+        .student-name {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .highlight {
+            background-color: #fde047;
+            font-weight: 600;
+        }
+
+        .room-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .room-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .room-body::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 1rem 0.5rem;
+            }
+            .lang-switcher {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Language Selection Buttons with Embedded SVGs -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-pt" onclick="switchLang('pt')">
+            <svg viewBox="0 0 600 400">
+                <rect width="240" height="400" fill="#006600"/>
+                <rect x="240" width="360" height="400" fill="#FF0000"/>
+                <circle cx="240" cy="200" r="80" fill="#FFFF00" stroke="#000" stroke-width="2"/>
+                <circle cx="240" cy="200" r="42" fill="#FFFFFF"/>
+                <path d="M 240,158 L 240,242 M 198,200 L 282,200" stroke="#FFFF00" stroke-width="4"/>
+            </svg>
+            Português
+        </button>
+        <button class="lang-btn" id="btn-en" onclick="switchLang('en')">
+            <svg viewBox="0 0 60 30">
+                <clipPath id="s">
+                    <path d="M0,0 v30 h60 v-30 z"/>
+                </clipPath>
+                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4" clip-path="url(#s)"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+            </svg>
+            English
+        </button>
+    </div>
+
+    <header>
+        <h1 data-pt="AC 2025-26 — Distribuição por Salas" data-en="AC 2025-26 — Room Allocation">AC 2025-26 — Distribuição por Salas</h1>
+        <h1 data-pt="Exame de Recurso: 2026-06-24 @ 17:00" data-en="Recovery Exam: 2026-06-24 @ 17:00">Exame de Recurso: 2026-06-24 @ 17:00</h1>
+	<div style="background-color: #fffbeb; border-left: 4px solid #d97706; padding: 1rem 1.25rem; border-radius: 6px; max-width: 600px; margin: 1.5rem auto; text-align: left; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+	    <p style="margin: 0; font-size: 0.95rem; color: #92400e; line-height: 1.5; font-weight: 500;"
+	       data-pt="Se o seu nome não consta nesta página, significa que já reprovou à unidade curricular por ter classificação na componente CLB &lt; 6.00." 
+	       data-en="If your name is not listed in this web page, it means you have already failed the course by having CLB grade &lt; 6.00.">
+	       Se o seu nome não consta nesta página, significa que já reprovou à unidade curricular por ter classificação na componente CLB &lt; 6.00.
+	    </p>
+	    <p style="margin: 0; margin-top: 0.5rem; font-size: 0.95rem; color: #92400e; line-height: 1.5; font-weight: 500;"
+	       data-pt="Em caso de erro, envie uma mensagem aos docentes no Piazza." 
+	       data-en="In case of mistake, send a message to the instructors in Piazza.">
+	       Em caso de erro, envie uma mensagem aos docentes no Piazza.
+	    </p>
+	</div>
+        <p data-pt="Localize o seu nome ou número de estudante abaixo" data-en="Find your name or student ID below">Localize o seu nome ou número de estudante abaixo</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" data-pt-placeholder="Pesquisar por nome ou ID..." data-en-placeholder="Search by name or ID..." placeholder="Pesquisar por nome ou ID...">
+    </div>
+
+    <div class="rooms-grid">
+
+        <!-- CARD 2: Ed VII — Sala 1.1 -->
+        <div class="room-card">
+            <div class="room-header">
+                <div class="room-title">
+                    <span data-pt="Ed VII — Sala 1.1" data-en="Ed VII — Room 1.1">Ed VII — Sala 1.1</span>
+                    <span class="room-count">37</span>
+                </div>
+                <div class="room-meta"><span data-pt="Responsável" data-en="Supervisor">Responsável</span>: Cecília Gomes</div>
+            </div>
+            <div class="room-body">
+		<div class="student-row"><span class="student-id">75379</span><span class="student-name">Afonso Leite Ribeiro Wandschneider Parreira</span></div>
+		<div class="student-row"><span class="student-id">73406</span><span class="student-name">Maryanne Gichonge Mwita</span></div>
+		<div class="student-row"><span class="student-id">74791</span><span class="student-name">Tomás Andrade Rodrigues Prazeres</span></div>
+		<div class="student-row"><span class="student-id">74415</span><span class="student-name">Rodrigo Cravela Klug</span></div>
+		<div class="student-row"><span class="student-id">74968</span><span class="student-name">Raquel Alexandra Candeias Pereira</span></div>
+		<div class="student-row"><span class="student-id">74579</span><span class="student-name">Tiago Alexandre de Faria Floro</span></div>
+		<div class="student-row"><span class="student-id">74393</span><span class="student-name">Ines Fernandes Fonseca</span></div>
+		<div class="student-row"><span class="student-id">74242</span><span class="student-name">Gonçalo Fernandes Tavares Neves Santos</span></div>
+		<div class="student-row"><span class="student-id">73581</span><span class="student-name">Élton Rodrigo Soares Vieira</span></div>
+		<div class="student-row"><span class="student-id">71299</span><span class="student-name">Tiago de Sousa Mendes Simões</span></div>
+		<div class="student-row"><span class="student-id">74366</span><span class="student-name">Dmytro Pertsak</span></div>
+		<div class="student-row"><span class="student-id">74290</span><span class="student-name">Francisco Maria Carrelhas das Neves da Palma Gaspar</span></div>
+		<div class="student-row"><span class="student-id">74308</span><span class="student-name">João Pedro Geraldo Duarte</span></div>
+		<div class="student-row"><span class="student-id">74529</span><span class="student-name">Tiago Miguel Varanda Antunes</span></div>
+		<div class="student-row"><span class="student-id">75068</span><span class="student-name">André Rafael Rodrigues Alves</span></div>
+		<div class="student-row"><span class="student-id">74277</span><span class="student-name">Gonçalo Melo Marques</span></div>
+		<div class="student-row"><span class="student-id">74959</span><span class="student-name">Tarang Bhavesh Pithadia</span></div>
+		<div class="student-row"><span class="student-id">74114</span><span class="student-name">Afonso Pinto Morais Bicho</span></div>
+		<div class="student-row"><span class="student-id">74664</span><span class="student-name">Xavier Cardoso de Oliveira Ferreira</span></div>
+		<div class="student-row"><span class="student-id">74906</span><span class="student-name">Rodrigo Miguel Pires Paulo</span></div>
+		<div class="student-row"><span class="student-id">74032</span><span class="student-name">Alice Do Ceu de Vasconcelos Batalha dos Santos Teixeira</span></div>
+		<div class="student-row"><span class="student-id">74029</span><span class="student-name">Filipe Du Xia</span></div>
+		<div class="student-row"><span class="student-id">74211</span><span class="student-name">Francisco Duarte Pires Marques</span></div>
+		<div class="student-row"><span class="student-id">74372</span><span class="student-name">André Santos Carneiro</span></div>
+		<div class="student-row"><span class="student-id">71356</span><span class="student-name">Afonso da Costa Alves</span></div>
+		<div class="student-row"><span class="student-id">74147</span><span class="student-name">Ana Catarina dos Santos Centeio Barbosa</span></div>
+		<div class="student-row"><span class="student-id">74192</span><span class="student-name">Iuri Hashchuk</span></div>
+		<div class="student-row"><span class="student-id">70217</span><span class="student-name">Mahir Mubarakbhai Momin</span></div>
+		<div class="student-row"><span class="student-id">71023</span><span class="student-name">Diogo Alexandre Garcia Viana</span></div>
+		<div class="student-row"><span class="student-id">74055</span><span class="student-name">André Almeida Morais</span></div>
+            </div>
+        </div>
+
+        <!-- CARD 4: Ed VII — Sala 1.14 (André Costa) -->
+        <div class="room-card">
+            <div class="room-header">
+                <div class="room-title">
+                    <span data-pt="Ed VII — Sala 1.14" data-en="Ed VII — Room 1.14">Ed VII — Sala 1.14</span>
+                    <span class="room-count">37</span>
+                </div>
+                <div class="room-meta"><span data-pt="Responsável" data-en="Supervisor">Responsável</span>: André Costa</div>
+            </div>
+            <div class="room-body">
+		<div class="student-row"><span class="student-id">74883</span><span class="student-name">Daniel Peixoto Figueiredo</span></div>
+		<div class="student-row"><span class="student-id">74274</span><span class="student-name">João Martelo Costa Campos</span></div>
+		<div class="student-row"><span class="student-id">67187</span><span class="student-name">Artem Katorhin </span></div>
+		<div class="student-row"><span class="student-id">74120</span><span class="student-name">Duarte Miguel Parreira de Oliveira</span></div>
+		<div class="student-row"><span class="student-id">74653</span><span class="student-name">Mário André Nunes Martins</span></div>
+		<div class="student-row"><span class="student-id">74254</span><span class="student-name">Afonso Pereira Lisboa</span></div>
+		<div class="student-row"><span class="student-id">74304</span><span class="student-name">Guilherme Silva Torres</span></div>
+		<div class="student-row"><span class="student-id">74020</span><span class="student-name">Daniel Amorim Pereira</span></div>
+		<div class="student-row"><span class="student-id">75677</span><span class="student-name">Mateus de Brito Fragoso Frederico</span></div>
+		<div class="student-row"><span class="student-id">75436</span><span class="student-name">David Zhu</span></div>
+		<div class="student-row"><span class="student-id">74517</span><span class="student-name">Nicolas Costa Dias da Rocha</span></div>
+		<div class="student-row"><span class="student-id">73391</span><span class="student-name">Alexandre Miguel Casimiro Silva</span></div>
+		<div class="student-row"><span class="student-id">74401</span><span class="student-name">Gonçalo Pedro Nunes Farinha</span></div>
+		<div class="student-row"><span class="student-id">74837</span><span class="student-name">Veronika Beltiukova</span></div>
+		<div class="student-row"><span class="student-id">75513</span><span class="student-name">Juan Miguel Timóteo Ferreira Lima</span></div>
+		<div class="student-row"><span class="student-id">74704</span><span class="student-name">Tomás de Neves Cabral Gonzalez e Robalo</span></div>
+		<div class="student-row"><span class="student-id">74958</span><span class="student-name">Daniel Cebotari</span></div>
+		<div class="student-row"><span class="student-id">65685</span><span class="student-name">João Pedro Rodrigues da Silva</span></div>
+		<div class="student-row"><span class="student-id">71184</span><span class="student-name">Eduardo da Silva Cunha</span></div>
+		<div class="student-row"><span class="student-id">73542</span><span class="student-name">Gonçalo Benedito Avelans Coelho</span></div>
+		<div class="student-row"><span class="student-id">74324</span><span class="student-name">Diogo Miguel Letras da Silva</span></div>
+		<div class="student-row"><span class="student-id">74452</span><span class="student-name">Miguel Filipe Gonçalves da Silva</span></div>
+		<div class="student-row"><span class="student-id">73439</span><span class="student-name">João Carlos Cardoso Gonçalves</span></div>
+		<div class="student-row"><span class="student-id">74907</span><span class="student-name">Miguel Marques Susano</span></div>
+		<div class="student-row"><span class="student-id">75460</span><span class="student-name">Miguel Arsénio Passão</span></div>
+		<div class="student-row"><span class="student-id">73384</span><span class="student-name">Hugo Miguel Ferreira da Rosa</span></div>
+		<div class="student-row"><span class="student-id">74449</span><span class="student-name">Miguel Aleixo Martins Campino Fernandes</span></div>
+		<div class="student-row"><span class="student-id">74440</span><span class="student-name">Miguel de Oliveira Campos Ferreira</span></div>
+		<div class="student-row"><span class="student-id">74426</span><span class="student-name">Tiago Miguel Marques Louro Nicolau</span></div>
+		<div class="student-row"><span class="student-id">75633</span><span class="student-name">Amirparsa Mohtasham</span></div>
+            </div>
+        </div>
+
+        <!-- CARD 5: Ed VII — Sala 1.15 (Hervé Paulino) -->
+        <div class="room-card">
+            <div class="room-header">
+                <div class="room-title">
+                    <span data-pt="Ed VII — Sala 1.15" data-en="Ed VII — Room 1.15">Ed VII — Sala 1.15</span>
+                    <span class="room-count">37</span>
+                </div>
+                <div class="room-meta"><span data-pt="Responsável" data-en="Supervisor">Responsável</span>: Hervé Paulino</div>
+            </div>
+            <div class="room-body">
+		<div class="student-row"><span class="student-id">68292</span><span class="student-name">Miguel de César Matias e Rodrigues Mendes Duarte</span></div>
+		<div class="student-row"><span class="student-id">74224</span><span class="student-name">Henrique Jacinto Raposo</span></div>
+		<div class="student-row"><span class="student-id">71637</span><span class="student-name">Dan Dragan</span></div>
+		<div class="student-row"><span class="student-id">75541</span><span class="student-name">Marco António Veterano Domingos</span></div>
+		<div class="student-row"><span class="student-id">75096</span><span class="student-name">Sadikshya Kharal</span></div>
+		<div class="student-row"><span class="student-id">74728</span><span class="student-name">Ricardo Joaquim Silva</span></div>
+		<div class="student-row"><span class="student-id">70414</span><span class="student-name">Cristiano Zgardan</span></div>
+		<div class="student-row"><span class="student-id">74822</span><span class="student-name">Rodrigo Miguel Costa de Carvalho</span></div>
+		<div class="student-row"><span class="student-id">70737</span><span class="student-name">Hélder Nuno Ribeiro Baptista</span></div>
+		<div class="student-row"><span class="student-id">72133</span><span class="student-name">Nick João Pereira</span></div>
+		<div class="student-row"><span class="student-id">71665</span><span class="student-name">Gonçalo Ribeiro de Oliveira</span></div>
+		<div class="student-row"><span class="student-id">73175</span><span class="student-name">Daniel Nobre Monteiro</span></div>
+		<div class="student-row"><span class="student-id">70033</span><span class="student-name">Gil Magalhães Raposo</span></div>
+		<div class="student-row"><span class="student-id">74326</span><span class="student-name">Dhruti Bhavin Hathalia</span></div>
+		<div class="student-row"><span class="student-id">74469</span><span class="student-name">Tiago Afonso Pereira Louro</span></div>
+		<div class="student-row"><span class="student-id">74915</span><span class="student-name">António José Moura Ferro Martins Nunes</span></div>
+		<div class="student-row"><span class="student-id">72087</span><span class="student-name">Miguel Ramalho Rickens</span></div>
+		<div class="student-row"><span class="student-id">75003</span><span class="student-name">António Gabriel Amaro Monteiro Alves</span></div>
+		<div class="student-row"><span class="student-id">71627</span><span class="student-name">Mariana Leal Saraiva Ganancia</span></div>
+		<div class="student-row"><span class="student-id">74479</span><span class="student-name">Samuel Filipe Nascimento Duarte</span></div>
+		<div class="student-row"><span class="student-id">74078</span><span class="student-name">André Krishner da Silva Condeco</span></div>
+		<div class="student-row"><span class="student-id">74776</span><span class="student-name">Pedro Miguel Oliveira Duarte</span></div>
+		<div class="student-row"><span class="student-id">70985</span><span class="student-name">Duarte Saiago Lima</span></div>
+		<div class="student-row"><span class="student-id">74521</span><span class="student-name">Goncalo Miranda Ferreira Palma Tavares</span></div>
+		<div class="student-row"><span class="student-id">71253</span><span class="student-name">Miguel Afonso Tavares Amores da Silva</span></div>
+		<div class="student-row"><span class="student-id">68510</span><span class="student-name">Miguel Antunes Santos Silva</span></div>
+		<div class="student-row"><span class="student-id">69135</span><span class="student-name">Bruno Yuran Jorge Leonel</span></div>
+		<div class="student-row"><span class="student-id">71573</span><span class="student-name">Dinis Costa Ramos da Silva Pereira</span></div>
+		<div class="student-row"><span class="student-id">70299</span><span class="student-name">João Pedro Maria Mané</span></div>
+		<div class="student-row"><span class="student-id">75872</span><span class="student-name">Liana Aimé Da Costa Mundaca</span></div>
+		<div class="student-row"><span class="student-id">71551</span><span class="student-name">Rodrigo Alexandre Sousa Valentim</span></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function switchLang(lang) {
+        // Manage active states on buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${lang}`).classList.add('active');
+
+        // Translate text fields
+        document.querySelectorAll('[data-pt]').forEach(el => {
+            el.textContent = el.getAttribute(`data-${lang}`);
+        });
+
+        // Translate the input placeholder
+        const searchInput = document.getElementById('searchInput');
+        searchInput.placeholder = searchInput.getAttribute(`data-${lang}-placeholder`);
+        
+        // Refresh active search logic filters if something is typed
+        searchInput.dispatchEvent(new Event('input'));
+    }
+
+    // Live Search Filter Logic
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const term = e.target.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('.student-row');
+        
+        rows.forEach(row => {
+            const idEl = row.querySelector('.student-id');
+            const nameEl = row.querySelector('.student-name');
+            const text = row.textContent.toLowerCase();
+            
+            if (term === "") {
+                row.style.display = 'flex';
+                idEl.innerHTML = idEl.textContent;
+                nameEl.innerHTML = nameEl.textContent;
+                return;
+            }
+            
+            if (text.includes(term)) {
+                row.style.display = 'flex';
+                highlightElement(idEl, term);
+                highlightElement(nameEl, term);
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    function highlightElement(el, term) {
+        const originalText = el.textContent;
+        const index = originalText.toLowerCase().indexOf(term);
+        if (index >= 0) {
+            const match = originalText.substring(index, index + term.length);
+            el.innerHTML = originalText.substring(0, index) + `<span class="highlight">${match}</span>` + originalText.substring(index + term.length);
+        } else {
+            el.innerHTML = originalText;
+        }
+    }
+</script>
+</body>
+</html>
