@@ -29,6 +29,9 @@ module:
 ############################
 ## ADVANCED
 ############################
+# Allow future-dated content (e.g. expected advisee thesis defense dates)
+# to be built and published, rather than silently hidden.
+buildFuture: true
 enableGitInfo: false
 summaryLength: 30
 pagination:

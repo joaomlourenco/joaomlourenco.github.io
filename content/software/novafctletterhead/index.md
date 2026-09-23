@@ -1,8 +1,8 @@
 ---
-title: "novafctletterhead"
+title: "📜🪶 novafctletterhead"
 date: 2026-01-02
 show_date: false
-summary: "Letterhead paper template for the NOVA School of Science and Technology (FCT-NOVA)."
+summary: "Letterhead paper template for the NOVA School of Science and Technology (NOVA FCT)."
 featured: false
 links:
   - icon_pack: fab

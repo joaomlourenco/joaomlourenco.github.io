@@ -1,5 +1,5 @@
 ---
-title: "coloredtheorem"
+title: "📜🪶 coloredtheorem"
 date: 2026-01-03
 show_date: false
 summary: "A colourful boxed theorem environment for LaTeX."

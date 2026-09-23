@@ -1,10 +1,14 @@
 ---
-title: "NOVAthesis"
+title: "📜🪶 novathesis"
 date: 2026-01-07
 show_date: false
 summary: "A LaTeX template for academic monographs (e.g., dissertations and theses). Serves both beginners and proficient LaTeX users."
 featured: true
 links:
+  - icon_pack: fas
+    icon: globe
+    name: Website
+    url: 'https://novathesis.org'
   - icon_pack: fab
     icon: github
     name: GitHub
@@ -16,5 +20,5 @@ links:
   - icon_pack: fas
     icon: rss
     name: Blog
-    url: 'https://novathesis.blogspot.pt'
+    url: 'https://novathesis.org/en/blog/'
 ---

@@ -8,7 +8,107 @@
 }
 
 .wg-about .row {
-  margin-top: 180px;
+  margin-top: 0px;
+}
+
+/* The theme pins the About section to exactly 100vh and overlaps the next
+   section by 70px, which assumes a short one-paragraph bio. Ours is longer,
+   so let the section grow to fit its content instead of clipping the tail
+   end of the text. */
+@media screen and (min-width: 768px) {
+  .wg-about {
+    height: auto;
+    min-height: 100vh;
+    margin-bottom: 0;
+    padding-bottom: 60px;
+  }
+}
+
+/* Advisees widget: soft section separators for year and degree groups. */
+.advisees-widget {
+  text-align: left;
+}
+
+.advisees-year {
+  margin-top: 2rem;
+}
+.advisees-year:first-child {
+  margin-top: 0;
+}
+
+.advisees-year-heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding-bottom: .3rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(128, 128, 128, .3);
+}
+
+.advisees-degree-group {
+  margin-top: 1.2rem;
+}
+.advisees-degree-group:first-child {
+  margin-top: 0;
+}
+
+.advisees-degree-heading {
+  font-size: .85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  opacity: .6;
+  margin-bottom: .5rem;
+}
+
+.advisees-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.advisees-item {
+  padding: .5rem 0;
+}
+
+.advisees-item-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.advisees-name {
+  font-weight: 600;
+}
+
+.advisees-conclusion-date {
+  font-size: .85rem;
+  opacity: .7;
+  white-space: nowrap;
+}
+.advisees-conclusion-date em {
+  font-style: normal;
+  opacity: .8;
+}
+
+.advisees-summary {
+  font-size: .95rem;
+  opacity: .85;
+  margin-top: .2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+
+.advisees-thesis-title {
+  font-style: italic;
+}
+
+.advisees-adviser,
+.advisees-other {
+  font-size: .85rem;
+  opacity: .8;
 }
 
 @keyframes slide-from-right {

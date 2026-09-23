@@ -1,8 +1,8 @@
 ---
-title: "biblatex-cse"
+title: "📜🪶 biblatex-cse"
 date: 2026-01-05
 show_date: false
-summary: "A BibLaTeX style that implements the bibliography style of the Council of Science Editors (CSE)."
+summary: "A BibLaTeX style that implements the bibliography style of the Council of Science Editors (CSE), popular within the Biological Sciences, Medicine & Health Sciences, Environmental & Earth Sciences, and Biochemistry & Biophysics."
 featured: false
 links:
   - icon_pack: fab

@@ -1,0 +1,28 @@
+{{/* Advisees widget (homepage): shows only the current year and later.
+     Older advisees are only on the full "See all" archive page at
+     /advisees/, which uses the same grouped rendering. */}}
+
+{{ $st := .page }}
+{{ $all_advisees := where site.RegularPages "Section" "advisees" }}
+{{ $recent_advisees := where $all_advisees "Date.Year" ">=" now.Year }}
+{{ $archive_page := site.GetPage "Section" "advisees" }}
+
+<div class="row">
+  <div class="section-heading col-12 mb-3 text-center">
+    {{ with $st.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+    {{ with $st.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+  </div>
+
+  <div class="col-12 col-lg-8 mx-auto advisees-widget">
+    {{ partial "advisees_grouped_list" (dict "pages" $recent_advisees) }}
+
+    {{ if $archive_page }}
+      <div class="see-all">
+        <a href="{{ $archive_page.RelPermalink }}">
+          See all
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+</div>

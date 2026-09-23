@@ -89,7 +89,7 @@
   <div class="col-12 col-lg-1">
   </div>
   <div class="col-12 col-lg-7">
-  <div class="vertical-center", align="justify">
+  <div class="vertical-center">
 
     {{/* Only display widget title in explicit instances of about widget, not in author pages. */}}
     {{ if and $page.Params.widget $page.Title }}<h1 class="biography-title">{{ $page.Title | markdownify | emojify }}</h1>{{ end }}

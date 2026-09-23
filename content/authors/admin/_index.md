@@ -69,14 +69,18 @@ highlight_name: true # Highlight the author in author lists? (true/false)
 
 ### About me ##
 
-I am an Associate Professor at the Computer Science Department of NOVA School of Science and Technology (NOVA FCT), NOVA University Lisbon, and Co-Director of UNINOVA — Institute for the Development of New Technologies. I received my PhD from NOVA University Lisbon in 2004, with a thesis on debugging of distributed programs.
+I am an Associate Professor at the [Computer Science Department](https://www.di.fct.unl.pt) of [NOVA School of Science and Technology]((https://www.fct.unl.pt)) (NOVA FCT), NOVA University Lisbon.  Since 2023 I am also Co-Director of [UNINOVA — Institute for the Development of New Technologies](https://www.uninova.pt), a non-prfit R&D institute. 
 
-I am a founding member of [NOVA LINCS](https://nova-lincs.di.fct.unl.pt), and my research focuses on in-memory data management for parallel and large-scale computing systems, testing and debugging of concurrent programs, and edge/fog computing. I am co-author of more than 50 articles and papers, and I have been a visiting researcher at IBM Research Haifa (2011), University of São Paulo at São Carlos (2014), and Brno University of Technology (2015).
+I received my PhD from NOVA University Lisbon in 2004, with a thesis on debugging of distributed programs, and I am a founding member of the [NOVA LINCS](https://nova-lincs.di.fct.unl.pt) Research Center. My research focuses on in-memory data management for parallel and large-scale computing systems, verification, testing and debugging of concurrent programs, and edge/fog computing. I am co-author of more than 50 articles and papers, and I have been a visiting researcher at IBM Research Haifa (2011), University of São Paulo at São Carlos (2014), and Brno University of Technology (2015).
 
-I am also a regular contributor to the LaTeX community, and the author of the popular [NOVAthesis](https://github.com/joaomlourenco/novathesis) LaTeX thesis template.
+I am also a regular contributor to the LaTeX community, and the author of the popular [**nova**thesis](https://novathesis.org) LaTeX thesis template.
 
 <span style="display: block; height: 8px;"></span>
 
-### NOVAthesis ##
+### novathesis ##
 
-Looking for the **NOVAthesis** LaTeX template? Get it from the [GitHub repository](https://github.com/joaomlourenco/novathesis), use it directly on [Overleaf](https://www.overleaf.com/latex/templates/novathesis-v7-dot-2-1/jhqwhtcwbmqc), or read the [documentation and tips](https://novathesis.blogspot.pt) on the NOVAthesis blog.
+Looking for the **nova**thesis LaTeX template? Get it from the [**nova**thesis project's web page](https://novathesis.org).
+
+### aidisclose ##
+
+Looking for an **aidisclose** statement? Generate it in Word or LaTeX format on the [**aidisclose** project's web page](https://aidisclose.org).

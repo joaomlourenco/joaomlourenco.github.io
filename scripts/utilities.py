@@ -1,6 +1,9 @@
 from scholarly import scholarly
 import os
 import re
+import time
+import difflib
+import requests
 
 def is_valid_doi(doi):
     # Regex to match standard DOI pattern (e.g., 10.xxxx/xxxxxxx)
@@ -8,29 +11,123 @@ def is_valid_doi(doi):
     # Test if the DOI matches the pattern
     return bool(re.match(doi_pattern, doi))
 
-def fetch_publications(profile_url, verbose = True):
-    """Fetch all publications from a Google Scholar profile."""
+def _normalize_title(title):
+    return re.sub(r"[^a-z0-9]+", " ", title.lower()).strip()
+
+def enrich_with_crossref(publication, min_similarity=0.85, verbose=True):
+    """Cross-check a publication against Crossref (by title) to fill in
+    fields Google Scholar left blank/unknown: journal, volume, issue, doi.
+    Never overwrites a field that already has a real value - only fills gaps,
+    and only when the returned title is a close match to ours, to avoid
+    attaching the wrong record.
+    """
+    title = publication.get('title', '')
+    if not title or title == 'N/A':
+        return publication
+
     try:
-        # Extract the user ID from the URL
-        user_id = profile_url.split("user=")[1].split("&")[0]
-        author = scholarly.search_author_id(user_id)
-        author_name = author['name']
-
+        resp = requests.get(
+            "https://api.crossref.org/works",
+            params={"query.bibliographic": title, "rows": 3},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        items = resp.json().get('message', {}).get('items', [])
+    except Exception as e:
         if verbose:
-            print("\033[35mFetching publications for:\033[0m")
-            print("\n")
-            print(f"\033[35mUser ID = {user_id}\033[0m")
-            print(f"\033[35mUser name = {author_name}\033[0m")
-            print("\n")
+            print(f"\033[33mCrossref lookup failed for '{title[:40]}...': {e}\033[0m", flush=True)
+        return publication
 
-        # Search for the profile
-        search_query = scholarly.search_author_id(user_id)
-        profile = scholarly.fill(search_query)
+    our_norm = _normalize_title(title)
+    best = None
+    best_ratio = 0.0
+    for item in items:
+        candidate_titles = item.get('title') or []
+        if not candidate_titles:
+            continue
+        # Crossref often splits "Title: Subtitle" into separate `title` and
+        # `subtitle` fields, so compare against both the bare title and the
+        # title+subtitle joined, and keep whichever scores higher.
+        candidates = [candidate_titles[0]]
+        subtitles = item.get('subtitle') or []
+        if subtitles:
+            candidates.append(f"{candidate_titles[0]}: {subtitles[0]}")
+        ratio = max(
+            difflib.SequenceMatcher(None, our_norm, _normalize_title(c)).ratio()
+            for c in candidates
+        )
+        if ratio > best_ratio:
+            best_ratio = ratio
+            best = item
 
-        # Collect publications
-        publications = []
-        for pub in profile.get('publications', []):
+    if best is None or best_ratio < min_similarity:
+        return publication
+
+    filled = []
+
+    journal = publication.get('journal', 'N/A')
+    if journal in ('N/A', 'Unknown Journal', '') and best.get('container-title'):
+        publication['journal'] = best['container-title'][0]
+        filled.append('journal')
+
+    volume = publication.get('volume', 'N/A')
+    if volume in ('N/A', '') and best.get('volume'):
+        publication['volume'] = best['volume']
+        filled.append('volume')
+
+    issue = publication.get('issue', 'N/A')
+    if issue in ('N/A', '') and best.get('issue'):
+        publication['issue'] = best['issue']
+        filled.append('issue')
+
+    doi = publication.get('doi', 'N/A')
+    if doi in ('N/A', '') and best.get('DOI'):
+        publication['doi'] = best['DOI']
+        if publication.get('url', 'N/A') in ('N/A', ''):
+            publication['url'] = f"https://doi.org/{best['DOI']}"
+        filled.append('doi')
+
+    if verbose and filled:
+        print(f"\033[32mCrossref filled {', '.join(filled)} (match {best_ratio:.2f})\033[0m", flush=True)
+
+    return publication
+
+def fetch_publications(profile_url, verbose = True, delay_seconds = 0, author_name = None, save_path = None):
+    """Fetch all publications from a Google Scholar profile.
+
+    If `save_path` is given, each publication is written to disk immediately
+    after it's successfully fetched (via `save_to_file`), so a crash or a
+    single bad item midway through a long run doesn't lose everything
+    already collected.
+    """
+    # Extract the user ID from the URL
+    user_id = profile_url.split("user=")[1].split("&")[0]
+    print(f"Looking up author id {user_id}...", flush=True)
+    author = scholarly.search_author_id(user_id)
+    scholar_author_name = author['name']
+
+    if verbose:
+        print("\033[35mFetching publications for:\033[0m", flush=True)
+        print(f"\033[35mUser ID = {user_id}\033[0m", flush=True)
+        print(f"\033[35mUser name = {scholar_author_name}\033[0m", flush=True)
+
+    if author_name is None:
+        author_name = scholar_author_name
+
+    # Search for the profile
+    search_query = scholarly.search_author_id(user_id)
+    profile = scholarly.fill(search_query)
+
+    # Collect publications
+    all_pubs = profile.get('publications', [])
+    print(f"Found {len(all_pubs)} publication stubs, fetching details...", flush=True)
+    publications = []
+    for i, pub in enumerate(all_pubs):
+        print(f"[{i+1}/{len(all_pubs)}] fetching details...", flush=True)
+        try:
             pub_details = scholarly.fill(pub)
+            if delay_seconds:
+                time.sleep(delay_seconds)
             title = pub_details.get('bib', {}).get('title', 'N/A')
             journal = pub_details.get('bib', {}).get('journal', 'N/A')
             author = pub_details.get('bib', {}).get('author', 'N/A')
@@ -113,28 +210,34 @@ def fetch_publications(profile_url, verbose = True):
                 'date': date_value,
             }
 
+            publication_data = enrich_with_crossref(publication_data, verbose=verbose)
+
             if verbose:
                 truncated_title = title if len(title) <= 30 else title[:27] + "..."
-                print(f"\033[36m{year}\033[0m {truncated_title} \033[36m{journal}\033[0m")
+                print(f"\033[36m{year}\033[0m {truncated_title} \033[36m{publication_data['journal']}\033[0m")
 
             publications.append(publication_data)
 
-        if verbose:
-            print("\n")
-            print(f"\033[35m{len(publications)} publications found\033[0m")
-            print("\n")
+            if save_path is not None:
+                folder_name = define_folder_name(publication_data)
+                save_to_file(publication_data, save_path, folder_name, author_name, verbose)
 
-        # Sort the publications
-        publications.sort(
-            key=lambda x: int(x.get('year')) if str(x.get('year')).isdigit() else 0,
-            reverse=False
-        )
+        except Exception as e:
+            print(f"\033[31mSkipping publication {i+1}/{len(all_pubs)} due to error: {e}\033[0m", flush=True)
+            continue
 
-        return publications
+    if verbose:
+        print("\n")
+        print(f"\033[35m{len(publications)} publications found\033[0m")
+        print("\n")
 
-    except Exception as e:
-        print(f"Error fetching publications: {e}")
-        return []
+    # Sort the publications
+    publications.sort(
+        key=lambda x: int(x.get('year')) if str(x.get('year')).isdigit() else 0,
+        reverse=False
+    )
+
+    return publications
 
 def manage_exception(journal, title, family_name):
     # Manage exceptions, such as non-journal articles, theses, etc.
