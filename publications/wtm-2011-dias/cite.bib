@@ -1,0 +1,11 @@
+@misc{wtm:2011:dias,
+  title        = {On Using Separation Logic to Detect Snapshot Isolation Anomalies in Software Transactional Memory},
+  author       = {Dias, Ricardo J. and Lourenço, João M.},
+  year         = 2011,
+  month        = may,
+  address      = {Paris, France},
+  wtm          = {Some performance issues of software transactional memory are caused by unnecessary abort situations where non serializable and yet non conflicting transactions are scheduled to execute concurrently. By smartly relaxing the isolation properties of transactions, transactional systems may overcome these performance issues and attain considerable gains. However, it is known that relaxing isolation restrictions may lead to execution anomalies causing programs to yield unexpected results. Some database management systems make that compromise and allow the option to operate with relaxed isolation mechanisms. In these cases, developers must accept the fact that they must explicitly deal with anomalies. In software transactional memory systems, where transactions protect the volatile state of programs, execution anomalies may have severe and unforeseen semantic consequences. In this setting, the balance between a relaxed isolation level and the ability to enforce the necessary correctness in general purpose language programs is harder to achieve. The solution we devise in this work is to statically analyze programs, using Separation Logic, to detect the kind of execution anomalies that emerge under snapshot isolation. Our approach allows a compiler to either warn the developer about the possible snapshot isolation anomalies in a given program, or to possibly inform automatic correctness strategies to ensure execution under full serializability.},
+  addendum     = {1st Euro-TM Workshop on Transactional Memory ({WTM}'11)},
+  citations    = {0},
+  keywords     = {paper,international,rank-X,rline-hpts},
+}
