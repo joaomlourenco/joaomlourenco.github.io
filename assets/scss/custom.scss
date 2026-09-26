@@ -24,40 +24,25 @@
   }
 }
 
-/* Advisees widget: soft section separators for year and degree groups. */
+/* Advisees widget: soft section separators for each type (Postdoc / PhD /
+   MSc / BSc). */
 .advisees-widget {
   text-align: left;
 }
 
-.advisees-year {
-  margin-top: 2rem;
-}
-.advisees-year:first-child {
-  margin-top: 0;
-}
-
-.advisees-year-heading {
-  font-size: 1.4rem;
-  font-weight: 600;
-  padding-bottom: .3rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(128, 128, 128, .3);
-}
-
 .advisees-degree-group {
-  margin-top: 1.2rem;
+  margin-top: 2rem;
 }
 .advisees-degree-group:first-child {
   margin-top: 0;
 }
 
 .advisees-degree-heading {
-  font-size: .85rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  opacity: .6;
-  margin-bottom: .5rem;
+  padding-bottom: .3rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(128, 128, 128, .3);
 }
 
 .advisees-list {
@@ -109,6 +94,147 @@
 .advisees-other {
   font-size: .85rem;
   opacity: .8;
+}
+
+/* Projects widget: same soft section separators, grouped by role/category. */
+.projects-widget {
+  text-align: left;
+}
+
+.projects-category-group {
+  margin-top: 2rem;
+}
+.projects-category-group:first-child {
+  margin-top: 0;
+}
+
+.projects-category-heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding-bottom: .3rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(128, 128, 128, .3);
+}
+
+.projects-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.projects-item {
+  padding: .5rem 0;
+}
+
+.projects-item-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.projects-name {
+  font-weight: 600;
+  min-width: 0;
+}
+
+.projects-period {
+  flex: 0 0 auto;
+  font-size: .85rem;
+  opacity: .7;
+  white-space: nowrap;
+}
+
+.projects-item-subheader {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+  margin-top: .1rem;
+}
+
+.projects-reference {
+  font-size: .75rem;
+  opacity: .6;
+  min-width: 0;
+}
+
+.projects-role {
+  flex: 0 0 auto;
+  font-size: .8rem;
+  opacity: .75;
+  white-space: nowrap;
+}
+
+.projects-description {
+  font-size: .78rem;
+  opacity: .85;
+  margin-top: .2rem;
+}
+
+.projects-funding {
+  font-size: .8rem;
+  opacity: .65;
+  margin-top: .2rem;
+}
+
+/* Teaching widget: same soft section separators as Advisees, grouped only
+   by academic year -- degree level is shown inline per-course instead of
+   as its own heading, to keep the list compact. */
+.teaching-widget {
+  text-align: left;
+}
+
+.teaching-year {
+  margin-top: 1.2rem;
+}
+.teaching-year:first-child {
+  margin-top: 0;
+}
+
+.teaching-year-heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding-bottom: .2rem;
+  margin-bottom: .3rem;
+  border-bottom: 1px solid rgba(128, 128, 128, .3);
+}
+
+.teaching-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.teaching-item {
+  padding: .3rem 0;
+}
+
+.teaching-item-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.teaching-name {
+  font-weight: 400;
+}
+
+.teaching-meta {
+  font-size: .85rem;
+  opacity: .7;
+  white-space: nowrap;
+}
+
+.teaching-other {
+  font-size: .78rem;
+  opacity: .65;
+  line-height: 1.2;
+  margin-top: .05rem;
 }
 
 @keyframes slide-from-right {
@@ -391,4 +517,88 @@ h2, h3 {
     }
   }
 }
+}
+
+.publications-sort-toggle {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.publications-type-group {
+  margin-top: 1.2rem;
+}
+.publications-type-group:first-child {
+  margin-top: 0;
+}
+
+.publications-type-heading {
+  font-size: .85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  opacity: .6;
+  margin-bottom: .5rem;
+}
+
+.publications-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.publications-item {
+  padding: .4rem 0;
+}
+
+.publications-item-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.publications-title {
+  font-weight: 600;
+  min-width: 0;
+}
+
+.publications-year {
+  flex: 0 0 auto;
+  font-size: .85rem;
+  opacity: .7;
+  white-space: nowrap;
+}
+
+.publications-item-subheader {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+  margin-top: .1rem;
+}
+
+.publications-authors {
+  font-size: .8rem;
+  opacity: .75;
+  min-width: 0;
+}
+
+.publications-type-label {
+  flex: 0 0 auto;
+  font-size: .75rem;
+  opacity: .6;
+  white-space: nowrap;
+}
+
+.publications-venue {
+  font-size: .78rem;
+  font-style: italic;
+  opacity: .65;
+  margin-top: .1rem;
+}
+
+.publications-links {
+  margin-top: .3rem;
 }

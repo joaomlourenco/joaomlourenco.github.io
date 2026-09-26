@@ -1,6 +1,6 @@
 ---
 title: "📜🪶 novathesis"
-date: 2026-01-07
+date: 2026-06-20
 show_date: false
 summary: "A LaTeX template for academic monographs (e.g., dissertations and theses). Serves both beginners and proficient LaTeX users."
 featured: true

@@ -1,0 +1,98 @@
+{{/* Renders a list of publication pages, with a toggle to switch between
+     "by type, then date" and "pure date" ordering.
+     Input: dict "pages" (list of publication Pages) */}}
+
+{{ $pubs := .pages }}
+{{ $pubs = sort $pubs "Date" "desc" }}
+
+{{/* Display order of publication types, by wowchemy publication_types code. */}}
+{{ $type_order := slice "2" "1" "6" "5" "7" "4" "3" "8" "0" }}
+{{ $type_labels := dict
+  "0" "Uncategorized"
+  "1" "Conference papers"
+  "2" "Journal articles"
+  "3" "Preprints"
+  "4" "Reports"
+  "5" "Books"
+  "6" "Book sections"
+  "7" "Theses"
+  "8" "Patents"
+}}
+{{ $type_labels_short := dict
+  "0" "Misc"
+  "1" "Conf. paper"
+  "2" "Article"
+  "3" "Preprint"
+  "4" "Tech. Rep."
+  "5" "Book"
+  "6" "Book chapter"
+  "7" "Thesis"
+  "8" "Patent"
+}}
+
+{{ $uid := "pubs" }}
+
+<div class="publications-sort-toggle">
+  <button type="button" class="btn btn-outline-primary btn-sm" data-sort-target="{{ $uid }}" data-sort-mode="type">
+    Sort: by type, then date <i class="fas fa-angle-down"></i>
+  </button>
+</div>
+
+<div id="{{ $uid }}-by-type" class="publications-sort-view">
+  {{ range $type_order }}
+    {{ $code := . }}
+    {{ $group := where $pubs "Params.publication_types" "intersect" (slice $code) }}
+    {{ if gt (len $group) 0 }}
+      <div class="publications-type-group">
+        <h2 class="publications-type-heading">{{ index $type_labels $code }}</h2>
+        <ul class="publications-list">
+          {{ range $group }}
+            {{ partial "publications_item.html" (dict "page" . "type_labels_short" $type_labels_short) }}
+          {{ end }}
+        </ul>
+      </div>
+    {{ end }}
+  {{ end }}
+</div>
+
+<div id="{{ $uid }}-by-date" class="publications-sort-view" style="display:none">
+  <ul class="publications-list">
+    {{ range $pubs }}
+      {{ partial "publications_item.html" (dict "page" . "type_labels_short" $type_labels_short) }}
+    {{ end }}
+  </ul>
+</div>
+
+<script>
+(function() {
+  var STORAGE_KEY = "pubs-sort-mode";
+  var btn = document.querySelector('[data-sort-target="{{ $uid }}"]');
+  if (!btn) return;
+  var byType = document.getElementById("{{ $uid }}-by-type");
+  var byDate = document.getElementById("{{ $uid }}-by-date");
+
+  function applyMode(mode) {
+    if (mode === "date") {
+      byType.style.display = "none";
+      byDate.style.display = "";
+      btn.innerHTML = 'Sort: pure date <i class="fas fa-angle-down"></i>';
+      btn.dataset.sortMode = "date";
+    } else {
+      byDate.style.display = "none";
+      byType.style.display = "";
+      btn.innerHTML = 'Sort: by type, then date <i class="fas fa-angle-down"></i>';
+      btn.dataset.sortMode = "type";
+    }
+  }
+
+  var saved = null;
+  try { saved = window.localStorage.getItem(STORAGE_KEY); } catch (e) {}
+  if (saved === "date" || saved === "type") applyMode(saved);
+
+  btn.addEventListener("click", function() {
+    var next = btn.dataset.sortMode === "date" ? "type" : "date";
+    applyMode(next);
+    try { window.localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+  });
+})();
+</script>

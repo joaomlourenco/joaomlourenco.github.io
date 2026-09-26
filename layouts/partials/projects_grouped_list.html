@@ -1,0 +1,39 @@
+{{/* Renders project pages grouped by category (Principal Investigator /
+     International Projects / National Projects / Research Networks),
+     sorted most recent first within each group.
+     Input: dict "pages" (list of project Pages) */}}
+
+{{ $projects := .pages }}
+{{ $projects = sort $projects "Date" "desc" }}
+{{ $category_order := slice "Principal Investigator" "International Projects" "National Projects" "Research Networks" }}
+
+{{ range $category_order }}
+  {{ $category := . }}
+  {{ $group := where $projects "Params.category" $category }}
+  {{ if gt (len $group) 0 }}
+    <div class="projects-category-group">
+      <h2 class="projects-category-heading">{{ $category }}</h2>
+      <ul class="projects-list">
+        {{ range $group }}
+          {{ $name := .Params.name | default .Title }}
+          <li class="projects-item">
+            <div class="projects-item-header">
+              <span class="projects-name">
+                {{ if .Params.link }}<a href="{{ .Params.link }}" target="_blank" rel="noopener">{{ $name }}</a>{{ else }}{{ $name }}{{ end }}
+              </span>
+              {{ with .Params.period }}<span class="projects-period">{{ . }}</span>{{ end }}
+            </div>
+            {{ if or .Params.reference .Params.role }}
+              <div class="projects-item-subheader">
+                <span class="projects-reference">{{ with .Params.reference }}{{ . }}{{ end }}</span>
+                <span class="projects-role">{{ with .Params.role }}{{ . | markdownify }}{{ end }}</span>
+              </div>
+            {{ end }}
+            {{ with .Params.description }}<div class="projects-description">{{ . | markdownify }}</div>{{ end }}
+            {{ with .Params.funding }}<div class="projects-funding">{{ . | markdownify }}</div>{{ end }}
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  {{ end }}
+{{ end }}

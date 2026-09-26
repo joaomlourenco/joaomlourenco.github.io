@@ -1,0 +1,38 @@
+{{/* Teaching widget (homepage): shows only the current academic year.
+     Full history is on the "See all" archive page at /teaching/, which
+     uses the same grouped rendering. */}}
+
+{{ $st := .page }}
+{{ $all_courses := where site.RegularPages "Section" "teaching" }}
+
+{{/* Portuguese academic year runs Sep-Aug: Sep-Dec belongs to Y/Y+1,
+     Jan-Aug belongs to Y-1/Y. */}}
+{{ $cur_academic_year := "" }}
+{{ if ge now.Month 9 }}
+  {{ $cur_academic_year = printf "%d/%02d" now.Year (mod (add now.Year 1) 100) }}
+{{ else }}
+  {{ $cur_academic_year = printf "%d/%02d" (sub now.Year 1) (mod now.Year 100) }}
+{{ end }}
+
+{{ $current_courses := where $all_courses "Params.academic_year" $cur_academic_year }}
+{{ $archive_page := site.GetPage "Section" "teaching" }}
+
+<div class="row">
+  <div class="section-heading col-12 mb-3 text-center">
+    {{ with $st.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+    {{ with $st.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+  </div>
+
+  <div class="col-12 col-lg-8 mx-auto teaching-widget">
+    {{ partial "teaching_grouped_list" (dict "pages" $current_courses) }}
+
+    {{ if $archive_page }}
+      <div class="see-all">
+        <a href="{{ $archive_page.RelPermalink }}">
+          See all
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+</div>

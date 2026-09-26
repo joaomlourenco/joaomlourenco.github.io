@@ -1,0 +1,24 @@
+{{/* Renders a single publication list item.
+     Input: dict "page" (a publication Page) "type_labels_short" (dict code->short label) */}}
+
+{{ $page := .page }}
+{{ $type_labels_short := .type_labels_short }}
+{{ $code := "0" }}
+{{ with $page.Params.publication_types }}{{ if gt (len .) 0 }}{{ $code = index . 0 }}{{ end }}{{ end }}
+{{ $type_label := index $type_labels_short $code }}
+
+<li class="publications-item">
+  <div class="publications-item-header">
+    <span class="publications-title"><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></span>
+    <span class="publications-year">{{ $page.Date.Format "2006" }}</span>
+  </div>
+  <div class="publications-item-subheader">
+    <span class="publications-authors">{{ partial "page_metadata_authors" $page }}</span>
+    <span class="publications-type-label">{{ $type_label }}</span>
+  </div>
+  {{ with $page.Params.publication }}<div class="publications-venue">{{ . | markdownify }}</div>{{ end }}
+  {{ $links := partial "page_links" (dict "page" $page "is_list" 1) }}
+  {{ if ne (trim $links "\n\r\t ") "" }}
+    <div class="publications-links">{{ $links }}</div>
+  {{ end }}
+</li>

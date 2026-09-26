@@ -1,0 +1,43 @@
+{{/* Renders teaching entries grouped by academic year, most recent first.
+     Within a year, courses are ordered by degree level (PhD / MSc / BSc),
+     shown inline next to the semester rather than as its own heading.
+     Input: dict "pages" (list of teaching Pages) */}}
+
+{{ $courses := .pages }}
+{{ $courses = sort $courses "Date" "desc" }}
+{{ $degree_order := slice "PhD" "Doctoral School" "MSc" "BSc" "Lic" }}
+
+{{ $seen_years := slice }}
+{{ range $courses }}
+  {{ $y := .Params.academic_year }}
+  {{ if not (in $seen_years $y) }}
+    {{ $seen_years = $seen_years | append $y }}
+  {{ end }}
+{{ end }}
+
+{{ range $seen_years }}
+  {{ $year := . }}
+  {{ $year_pages := where $courses "Params.academic_year" $year }}
+
+  <div class="teaching-year">
+    <h2 class="teaching-year-heading">{{ $year }}</h2>
+    <ul class="teaching-list">
+      {{ range $degree_order }}
+        {{ $degree := . }}
+        {{ $degree_label := $degree }}
+        {{ if eq $degree "Doctoral School" }}{{ $degree_label = "Doctoral School · PhD" }}{{ end }}
+        {{ range where $year_pages "Params.degree" $degree }}
+          <li class="teaching-item">
+            <div class="teaching-item-header">
+              <span class="teaching-name">{{ .Title }}</span>
+              <span class="teaching-meta">
+                {{ with .Params.semester }}{{ . }} semester{{ end }}{{ with $degree_label }} · {{ . }}{{ end }}
+              </span>
+            </div>
+            {{ with .Params.other }}<div class="teaching-other">{{ . | markdownify }}</div>{{ end }}
+          </li>
+        {{ end }}
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}

@@ -1,59 +1,42 @@
-{{/* Renders a list of advisee pages grouped by conclusion year, then by
-     degree (PhD / MSc / BSc), sorted by conclusion date within each group.
-     Future conclusion dates are labelled "(expected)".
+{{/* Renders a list of advisee pages grouped by type (Postdoc / PhD / MSc /
+     BSc), sorted by conclusion date (most recent/upcoming first) within
+     each group. Future conclusion dates are labelled "(expected)".
      Input: dict "pages" (list of advisee Pages) */}}
 
 {{ $advisees := .pages }}
 {{ $advisees = sort $advisees "Date" "desc" }}
-{{ $degree_order := slice "PhD" "MSc" "BSc" }}
+{{ $degree_order := slice "Postdoc" "PhD" "MSc" "BSc" }}
 
-{{ $seen_years := slice }}
-{{ range $advisees }}
-  {{ $y := .Date.Year }}
-  {{ if not (in $seen_years $y) }}
-    {{ $seen_years = $seen_years | append $y }}
-  {{ end }}
-{{ end }}
-
-{{ range $seen_years }}
-  {{ $year := . }}
-  {{ $year_pages := where $advisees "Date.Year" $year }}
-
-  <div class="advisees-year">
-    <h2 class="advisees-year-heading">{{ $year }}</h2>
-
-    {{ range $degree_order }}
-      {{ $degree := . }}
-      {{ $group := where $year_pages "Params.degree" $degree }}
-      {{ if gt (len $group) 0 }}
-        <div class="advisees-degree-group">
-          <h3 class="advisees-degree-heading">{{ $degree }}</h3>
-          <ul class="advisees-list">
-            {{ range $group }}
-              {{ $is_future := gt .Date now }}
-              <li class="advisees-item">
-                <div class="advisees-item-header">
-                  <span class="advisees-name">{{ .Title }}</span>
-                  <span class="advisees-conclusion-date">
-                    {{ with .Params.date_label }}{{ . }}{{ else }}{{ .Date.Format "Jan 2006" }}{{ end }}
-                    {{ if $is_future }}<em>(expected)</em>{{ end }}
-                  </span>
-                </div>
-                {{ with .Params.thesis }}
-                  <div class="advisees-summary">
-                    {{ with .title }}<span class="advisees-thesis-title">“{{ . | markdownify }}”</span>{{ end }}
-                    {{/* `coadviser`: I am the main adviser, this person co-advises.
-                         `mainadviser`: this person is the main adviser, I co-advise. */}}
-                    {{ with .coadviser }}<span class="advisees-adviser">Coadviser: {{ . | markdownify }}</span>{{ end }}
-                    {{ with .mainadviser }}<span class="advisees-adviser">Main adviser: {{ . | markdownify }}</span>{{ end }}
-                    {{ with .other }}<span class="advisees-other">{{ . | markdownify }}</span>{{ end }}
-                  </div>
-                {{ end }}
-              </li>
+{{ range $degree_order }}
+  {{ $degree := . }}
+  {{ $group := where $advisees "Params.degree" $degree }}
+  {{ if gt (len $group) 0 }}
+    <div class="advisees-degree-group">
+      <h2 class="advisees-degree-heading">{{ $degree }}</h2>
+      <ul class="advisees-list">
+        {{ range $group }}
+          {{ $is_future := gt .Date now }}
+          <li class="advisees-item">
+            <div class="advisees-item-header">
+              <span class="advisees-name">{{ .Title }}</span>
+              <span class="advisees-conclusion-date">
+                {{ with .Params.date_label }}{{ . }}{{ else }}{{ .Date.Format "Jan 2006" }}{{ end }}
+                {{ if $is_future }}<em>(expected)</em>{{ end }}
+              </span>
+            </div>
+            {{ with .Params.thesis }}
+              <div class="advisees-summary">
+                {{ with .title }}<span class="advisees-thesis-title">“{{ . | markdownify }}”</span>{{ end }}
+                {{/* `coadviser`: I am the main adviser, this person co-advises.
+                     `mainadviser`: this person is the main adviser, I co-advise. */}}
+                {{ with .coadviser }}<span class="advisees-adviser">Coadviser: {{ . | markdownify }}</span>{{ end }}
+                {{ with .mainadviser }}<span class="advisees-adviser">Main adviser: {{ . | markdownify }}</span>{{ end }}
+                {{ with .other }}<span class="advisees-other">{{ . | markdownify }}</span>{{ end }}
+              </div>
             {{ end }}
-          </ul>
-        </div>
-      {{ end }}
-    {{ end }}
-  </div>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  {{ end }}
 {{ end }}

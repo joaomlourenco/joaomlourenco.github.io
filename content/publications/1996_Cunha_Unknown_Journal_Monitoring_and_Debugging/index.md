@@ -2,8 +2,8 @@
 title: "Monitoring and Debugging Support"
 date: 1996-01-01
 publishDate: 1996-01-01
-authors: ["José C Cunha", "V Duarte", "J Lourenço", "T Antão"]
-publication_types: ["2"]
+authors: ["José C Cunha", "V Duarte", "**João M. Lourenço**", "T Antão"]
+publication_types: ["4"]
 abstract: "N/A"
 featured: true
 publication: "Unknown Journal 1996 "

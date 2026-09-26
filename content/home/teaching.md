@@ -1,5 +1,5 @@
 ---
-widget: pages
+widget: teaching
 
 # This file represents a page section.
 headless: true
@@ -10,22 +10,4 @@ weight: 35
 
 title: Teaching
 subtitle: ''
-
-content:
-  filters:
-    folders:
-      - teaching
-    tag: ''
-    category: ''
-    publication_type: ''
-    author: ''
-    exclude_featured: false
-    exclude_future: false
-    exclude_past: false
-  count: 0
-  offset: 0
-  order: desc
-design:
-  view: compact
-  columns: '2'
 ---

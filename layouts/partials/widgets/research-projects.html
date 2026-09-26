@@ -1,0 +1,29 @@
+{{/* Projects widget (homepage): shows only the single most recent project.
+     Full history is on the "See all" archive page at /projects/, which
+     uses the same grouped rendering. */}}
+
+{{ $st := .page }}
+{{ $all_projects := where site.RegularPages "Section" "projects" }}
+{{ $all_projects = sort $all_projects "Date" "desc" }}
+{{ $most_recent := first 1 $all_projects }}
+{{ $archive_page := site.GetPage "Section" "projects" }}
+
+<div class="row">
+  <div class="section-heading col-12 mb-3 text-center">
+    {{ with $st.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+    {{ with $st.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+  </div>
+
+  <div class="col-12 col-lg-8 mx-auto projects-widget">
+    {{ partial "projects_grouped_list" (dict "pages" $most_recent) }}
+
+    {{ if $archive_page }}
+      <div class="see-all">
+        <a href="{{ $archive_page.RelPermalink }}">
+          See all
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+</div>

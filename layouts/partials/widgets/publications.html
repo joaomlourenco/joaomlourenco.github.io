@@ -1,0 +1,47 @@
+{{/* Publications widget (homepage): shows only the N most recent publications,
+     in the same item layout as the full "See all" archive page at
+     /publications/, via the shared publications_item partial. */}}
+
+{{ $st := .page }}
+
+{{ $all_pubs := where site.RegularPages "Section" "publications" }}
+{{ $all_pubs = sort $all_pubs "Date" "desc" }}
+{{ $recent_pubs := first 6 $all_pubs }}
+
+{{ $type_labels_short := dict
+  "0" "Misc"
+  "1" "Conf. paper"
+  "2" "Article"
+  "3" "Preprint"
+  "4" "Tech. Rep."
+  "5" "Book"
+  "6" "Book chapter"
+  "7" "Thesis"
+  "8" "Patent"
+}}
+
+{{ $archive_page := site.GetPage "Section" "publications" }}
+
+<div class="row">
+  <div class="section-heading col-12 mb-3 text-center">
+    {{ with $st.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+    {{ with $st.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+  </div>
+
+  <div class="col-12 col-lg-8 mx-auto publications-widget">
+    <ul class="publications-list">
+      {{ range $recent_pubs }}
+        {{ partial "publications_item.html" (dict "page" . "type_labels_short" $type_labels_short) }}
+      {{ end }}
+    </ul>
+
+    {{ if $archive_page }}
+      <div class="see-all">
+        <a href="{{ $archive_page.RelPermalink }}">
+          See all
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+</div>

@@ -1,6 +1,6 @@
 ---
 title: "📜🪶 stocksize"
-date: 2026-01-04
+date: 2026-03-01
 show_date: false
 summary: "A LaTeX package that allows changing the paper (stock) size in the middle of a document. Used in the **nova**thesis project."
 featured: false
