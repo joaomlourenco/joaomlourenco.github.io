@@ -52,8 +52,13 @@ outputs:
   section: [HTML, RSS]
 imaging:
   resampleFilter: lanczos
-  quality: 75
   anchor: smart
+  jpeg:
+    quality: 75
+  webp:
+    quality: 75
+  avif:
+    quality: 75
 timeout: 600000
 taxonomies:
   tag: tags
@@ -86,10 +91,10 @@ sitemap:
 ############################
 
 cascade:
-  - _target:
+  - target:
       path: /blog/**
     share: false
-  - _target:
+  - target:
       path: /publication/**
     share: false
 

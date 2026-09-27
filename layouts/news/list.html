@@ -1,0 +1,15 @@
+{{- define "main" -}}
+
+{{ partial "page_header.html" . }}
+
+<div class="universal-wrapper">
+  {{ with .Content }}
+    <div class="article-style">{{ . }}</div>
+  {{ end }}
+
+  <div class="news-widget">
+    {{ partial "news_list" (dict "pages" .Pages) }}
+  </div>
+</div>
+
+{{- end -}}

@@ -1,5 +1,5 @@
 ---
-title: "Pedro Deotato"
+title: "Pedro Henrique Jones Deodato"
 date: 2021-02-27
 degree: "MSc"
 thesis:

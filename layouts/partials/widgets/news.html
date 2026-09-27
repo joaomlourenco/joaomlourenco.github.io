@@ -1,0 +1,28 @@
+{{/* News widget (homepage): shows only the 5 most recent items, in the
+     same layout as the full "See all" archive page at /news/. */}}
+
+{{ $st := .page }}
+{{ $all_news := where site.RegularPages "Section" "news" }}
+{{ $all_news = sort $all_news "Date" "desc" }}
+{{ $recent_news := first 5 $all_news }}
+{{ $archive_page := site.GetPage "Section" "news" }}
+
+<div class="row">
+  <div class="section-heading col-12 mb-3 text-center">
+    {{ with $st.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+    {{ with $st.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+  </div>
+
+  <div class="col-12 col-lg-8 mx-auto news-widget">
+    {{ partial "news_list" (dict "pages" $recent_news) }}
+
+    {{ if $archive_page }}
+      <div class="see-all">
+        <a href="{{ $archive_page.RelPermalink }}">
+          See all
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+</div>

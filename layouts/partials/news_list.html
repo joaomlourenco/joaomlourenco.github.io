@@ -1,0 +1,19 @@
+{{/* Renders a flat, reverse-chronological list of news items.
+     Input: dict "pages" (list of news Pages) */}}
+
+{{ $items := .pages }}
+{{ $items = sort $items "Date" "desc" }}
+
+<ul class="news-list">
+  {{ range $items }}
+    <li class="news-item">
+      <div class="news-item-header">
+        <a class="news-title" href="{{ .RelPermalink }}">{{ .Title | markdownify | emojify }}</a>
+        <span class="news-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+      </div>
+      {{ with .Summary }}
+        <div class="news-summary">{{ . }}</div>
+      {{ end }}
+    </li>
+  {{ end }}
+</ul>

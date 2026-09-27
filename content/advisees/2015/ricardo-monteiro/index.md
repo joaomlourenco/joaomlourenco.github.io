@@ -1,9 +1,9 @@
 ---
-title: "Ricardo Monteiro"
-date: 2015-06-01
+title: "Ricardo Afonso da Cruz Monteiro"
+date: 2015-11-01
 degree: "MSc"
 thesis:
-  title: "Distributed Storage in a Cloud of Mobile Devices"
-  coadviser: "Hervé Paulino (FCT-NOVA)"
+  title: "[Distributed Storage in a Cloud of Mobile Devices](http://hdl.handle.net/10362/166926)"
+  mainadviser: "Hervé Paulino (FCT-NOVA)"
   other: "Development of a distributed storage for the Edge-Cloud setting."
 ---

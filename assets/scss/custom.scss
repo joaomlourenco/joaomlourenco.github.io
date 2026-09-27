@@ -602,3 +602,43 @@ h2, h3 {
 .publications-links {
   margin-top: .3rem;
 }
+
+.news-widget {
+  text-align: left;
+}
+
+.news-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.news-item {
+  padding: .4rem 0;
+}
+
+.news-item-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.news-title {
+  font-weight: 600;
+  min-width: 0;
+}
+
+.news-date {
+  flex: 0 0 auto;
+  font-size: .85rem;
+  opacity: .7;
+  white-space: nowrap;
+}
+
+.news-summary {
+  font-size: .85rem;
+  opacity: .8;
+  margin-top: .1rem;
+}

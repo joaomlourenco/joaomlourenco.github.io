@@ -1,8 +1,8 @@
 ---
-_build:
+build:
   render: never
 cascade:
-  _build:
+  build:
     list: always
     render: never
 cms_exclude: true
