@@ -4,7 +4,7 @@
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page"
-  }
+  },
   "routes": [
      { "pattern": "joaomlourenco.org",     "custom_domain": true },
      { "pattern": "www.joaomlourenco.org", "custom_domain": true }
