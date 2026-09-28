@@ -2,4 +2,8 @@
 # Automatically generated
 # Documentation: https://docs.netlify.com/routing/redirects/
 /advisees.html /advisees/index.html
+/teaching.html /teaching/index.html
+/news.html /news/index.html
 /publications.html /publications/index.html
+/software.html /software/index.html
+/projects.html /projects/index.html
