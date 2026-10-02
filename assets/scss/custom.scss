@@ -642,3 +642,18 @@ h2, h3 {
   opacity: .8;
   margin-top: .1rem;
 }
+
+.contacts-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.contacts-block {
+  flex: 1 1 260px;
+}
+
+.contacts-block address {
+  font-style: normal;
+  margin-bottom: 0;
+}

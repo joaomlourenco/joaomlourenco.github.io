@@ -24,7 +24,8 @@ BIB_PATHS = [
     os.path.join(ROOT, "bibliography-source", "jml-all.bib"),
     os.path.join(ROOT, "bibliography-source", "education.bib"),
 ]
-PUB_GLOB = os.path.join(ROOT, "content", "publications", "*", "index.md")
+# Recursive (**) since publications now live under content/publications/<year>/<slug>/.
+PUB_GLOB = os.path.join(ROOT, "content", "publications", "**", "index.md")
 
 MATCH_CUTOFF = 0.88
 
@@ -70,7 +71,7 @@ def main():
         if e["title"]:
             by_norm.setdefault(norm(e["title"]), []).append(e)
 
-    files = sorted(glob.glob(PUB_GLOB))
+    files = sorted(glob.glob(PUB_GLOB, recursive=True))
     matched, unmatched = 0, []
     for f in files:
         text = open(f, encoding="utf-8").read()

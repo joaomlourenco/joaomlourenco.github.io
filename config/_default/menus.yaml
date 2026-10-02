@@ -25,4 +25,6 @@ main:
   - name: Publications
     url: '#publications'
     weight: 40
-  
+  - name: Contacts
+    url: '/contacts.html'
+    weight: 50

@@ -46,6 +46,12 @@ permalinks:
   categories: '/category/:slug/'
   publication_types: '/publication-type/:slug/'
   blog: '/blog/:slug'
+  # content/projects and content/publications are organized on disk into
+  # year subfolders (content/projects/<year>/<slug>/), purely for ease of
+  # browsing/editing -- :slug alone (ignoring the year segment) keeps the
+  # published URLs exactly as they were before that reorganization.
+  projects: '/projects/:filename/'
+  publications: '/publications/:filename/'
 disableAliases: false
 outputs:
   home: [HTML, RSS, JSON, WebAppManifest, headers, redirects]
