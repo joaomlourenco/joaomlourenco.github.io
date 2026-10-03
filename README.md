@@ -43,7 +43,7 @@ hugo server
 
 Pushing to `mainer` triggers the `gh-pages.yml` GitHub Action, which builds the site
 with Hugo and publishes it to the `gh-pages` branch. In the repository Settings → Pages,
-set the source to deploy from the `gh-pages` branch, `/(root)`.
+set the source to deploy from the `gh-pages` branch, `/(root)`. 
 
 ## Credit
 
