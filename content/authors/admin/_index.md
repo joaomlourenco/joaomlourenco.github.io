@@ -47,20 +47,25 @@ education:
 # Alternatively, use `google-scholar` icon from `ai` icon pack
 social:
   - icon: envelope
+    label: Email
     icon_pack: fas
     link: mailto:joao.lourenco@fct.unl.pt
   - icon: github
+    label: GitHub
     icon_pack: fab
     link: https://github.com/joaomlourenco
     display:
       header: true
   - icon: graduation-cap
+    label: Google Scholar
     icon_pack: fas
     link: https://scholar.google.com/citations?user=8aN-HtMAAAAJ&hl=en
   - icon: orcid
+    label: ORCID
     icon_pack: ai
     link: https://orcid.org/0000-0002-8495-6442
   - icon: dblp
+    label: DBLP
     icon_pack: ai
     link: https://dblp.org/pid/14/3418
 
