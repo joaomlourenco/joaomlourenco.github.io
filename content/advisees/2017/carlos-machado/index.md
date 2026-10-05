@@ -1,7 +1,10 @@
 ---
 title: "Carlos Machado"
 date: 2017-06-01
+linkedin: "https://www.linkedin.com/in/cmmachado/"
 degree: "MSc"
+aliases:
+  - /advisees/2016/carlos-machado.html
 thesis:
   title: "Suporte Aplicacional de um Workflow para Selecção Assistida de Fotografias"
   coadviser: "Fernando Birra (FCT-NOVA)"

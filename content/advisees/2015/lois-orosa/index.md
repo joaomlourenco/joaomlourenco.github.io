@@ -2,6 +2,7 @@
 title: "Lois Orosa"
 date: 2015-06-01
 date_label: "2014/2015"
+linkedin: "https://www.linkedin.com/in/loisorosa/"
 degree: "Postdoc"
 thesis:
   title: "Hardware Support to Detect Atomicity Violations"

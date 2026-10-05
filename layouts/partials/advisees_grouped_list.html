@@ -1,25 +1,40 @@
 {{/* Renders a list of advisee pages grouped by type (Postdoc / PhD / MSc /
      BSc), sorted by conclusion date (most recent/upcoming first) within
      each group. Future conclusion dates are labelled "(expected)".
-     Input: dict "pages" (list of advisee Pages) */}}
+     Input: dict "pages" (list of advisee Pages); optional "degrees" (slice
+     of the types to render, in order; default all four). */}}
 
 {{ $advisees := .pages }}
 {{ $advisees = sort $advisees "Date" "desc" }}
-{{ $degree_order := slice "Postdoc" "PhD" "MSc" "BSc" }}
+{{ $degree_order := .degrees | default (slice "Postdoc" "PhD" "MSc" "BSc") }}
 
 {{ range $degree_order }}
   {{ $degree := . }}
   {{ $group := where $advisees "Params.degree" $degree }}
   {{ if gt (len $group) 0 }}
     <div class="advisees-degree-group">
-      <h2 class="advisees-degree-heading">{{ $degree }}</h2>
+      <h2 class="advisees-degree-heading" id="{{ lower $degree }}">{{ $degree }}</h2>
       <ul class="advisees-list">
         {{ range $group }}
           {{ $is_future := gt .Date now }}
           <li class="advisees-item">
+            {{/* Photo: any image in the advisee's page bundle (named after the
+                 student, e.g. rui-belchior.png); otherwise an initials avatar so
+                 the rows stay aligned. */}}
+            {{ $photos := .Resources.ByType "image" }}
+            {{ if $photos }}
+              {{ $photo := (index $photos 0).Fill "112x112 Center" }}
+              <img class="advisees-photo" src="{{ $photo.RelPermalink }}" width="56" height="56" alt="{{ .Title }}" loading="lazy">
+            {{ else }}
+              {{ $words := split (trim .Title " ") " " }}
+              {{ $initials := upper (printf "%s%s" (substr (index $words 0) 0 1) (substr (index $words (sub (len $words) 1)) 0 1)) }}
+              <span class="advisees-photo advisees-photo-initials" aria-hidden="true">{{ $initials }}</span>
+            {{ end }}
+            <div class="advisees-item-body">
             <div class="advisees-item-header">
-              <span class="advisees-name">{{ .Title }}</span>
+              {{ $title := .Title }}<span class="advisees-who"><span class="advisees-name">{{ .Title }}</span>{{ with .Params.linkedin }}<a class="advisees-linkedin" href="{{ . | safeURL }}" target="_blank" rel="noopener" aria-label="LinkedIn profile of {{ $title }}" title="LinkedIn"><i class="fab fa-linkedin"></i></a>{{ end }}</span>
               <span class="advisees-conclusion-date">
+                <span class="advisees-degree">{{ $degree }}</span><span class="advisees-sep" aria-hidden="true"> · </span>
                 {{ with .Params.date_label }}{{ . }}{{ else }}{{ .Date.Format "Jan 2006" }}{{ end }}
                 {{ if $is_future }}<em>(expected)</em>{{ end }}
               </span>
@@ -34,6 +49,7 @@
                 {{ with .other }}<span class="advisees-other">{{ . | markdownify }}</span>{{ end }}
               </div>
             {{ end }}
+            </div>
           </li>
         {{ end }}
       </ul>

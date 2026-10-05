@@ -3,6 +3,7 @@ title: "I Know What You Did Last Summer: Time-Aware Publish/Subscribe for Networ
 date: 2017-01-01
 publishDate: 2017-01-01
 authors: ["JA Silva", "H Paulino", "**João M. Lourenço**", "J Leitão", "N Preguiça"]
+cite_key: "thyme_arxiv:2017:jsilva"
 publication_types: ["1"]
 abstract: "N/A"
 featured: true

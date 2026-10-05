@@ -2,6 +2,7 @@
 title: "Transactional Memories: Foundations, Algorithms, Tools, and Applications (Euro-TM), (IC Action IC1001)"
 name: "Transactional Memories: Foundations, Algorithms, Tools, and Applications (Euro-TM)"
 reference: "IC Action IC1001"
+short: "Euro-TM"
 date: 2010-01-01
 category: "Research Networks"
 role: "MC Member: João Lourenço (FCT-NOVA)"

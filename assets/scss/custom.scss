@@ -30,6 +30,22 @@
   text-align: left;
 }
 
+/* Short table of contents at the top of the advisees pages. */
+.advisees-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.2rem;
+  margin: 0 0 1.5rem;
+  font-weight: 600;
+}
+.advisees-toc a[aria-current="page"] {
+  text-decoration: none;
+  opacity: .6;
+}
+.advisees-degree-heading {
+  scroll-margin-top: 5rem;
+}
+
 .advisees-degree-group {
   margin-top: 2rem;
 }
@@ -53,6 +69,33 @@
 
 .advisees-item {
   padding: .5rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+}
+
+.advisees-item-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.advisees-photo {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgba(128, 128, 128, .15);
+}
+
+.advisees-photo-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  opacity: .55;
 }
 
 .advisees-item-header {
@@ -67,10 +110,23 @@
   font-weight: 600;
 }
 
+.advisees-linkedin {
+  margin-left: .45rem;
+  font-size: .95rem;
+  text-decoration: none;
+}
+
 .advisees-conclusion-date {
   font-size: .85rem;
   opacity: .7;
   white-space: nowrap;
+}
+.advisees-degree {
+  font-weight: 600;
+}
+.advisees-sep {
+  opacity: .7;
+  white-space: pre;
 }
 .advisees-conclusion-date em {
   font-style: normal;
@@ -90,9 +146,16 @@
   font-style: italic;
 }
 
-.advisees-adviser,
-.advisees-other {
+.advisees-adviser {
   font-size: .85rem;
+  opacity: .8;
+}
+
+/* The free-text comment ("other") is the least important line: smaller. */
+.advisees-other {
+  font-size: .78rem;
+  line-height: 1.4;
+  margin-top: .3rem;
   opacity: .8;
 }
 
@@ -686,4 +749,345 @@ h2, h3 {
 .network-icon a[data-tooltip]:focus-visible::after {
   opacity: 1;
   visibility: visible;
+}
+
+/* Teaching overview (alternative layout): course x academic-year matrix. */
+.tm-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+  margin-bottom: 1rem;
+}
+.tm-head h1 { margin-bottom: 0; }
+.tm-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .9rem;
+}
+.tm-classic { opacity: .8; }
+.tm-sort { position: relative; }
+.tm-btn {
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgba(128, 128, 128, .5);
+  border-radius: 6px;
+  padding: .25rem .7rem;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.tm-btn:hover { border-color: rgba(128, 128, 128, .9); }
+.tm-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 20;
+  min-width: 13rem;
+  margin: 0;
+  padding: .3rem 0;
+  list-style: none;
+  background: var(--tm-bg, #fff);
+  border: 1px solid rgba(128, 128, 128, .5);
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+}
+.tm-menu[hidden] { display: none; }
+.tm-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  padding: .3rem .9rem;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.tm-menu button:hover { background: rgba(128, 128, 128, .15); }
+.tm-menu button.tm-on { font-weight: 600; }
+.tm-menu button.tm-on::before { content: "✓ "; }
+
+.tm-scroll {
+  overflow-x: auto;
+  padding-bottom: .5rem;
+}
+.tm-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .82rem;
+}
+.tm-table th,
+.tm-table td { padding: 0; }
+/* The theme stripes table rows; the matrix reads better without. */
+.tm-table tbody tr,
+.tm-table tbody tr:nth-of-type(odd) { background: transparent !important; }
+.tm-table td,
+.tm-table th { border-top: 0 !important; }
+.tm-name {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--tm-bg, #fff);
+  text-align: left;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: .12rem .8rem .12rem 0 !important;
+}
+.tm-corner { font-weight: 600; vertical-align: bottom; }
+.tm-deg {
+  margin-left: .5rem;
+  font-size: .72rem;
+  opacity: .55;
+}
+.tm-grouped .tm-deg { display: none; }
+.tm-year {
+  height: 4.2rem;
+  width: 1.3rem;
+  min-width: 1.3rem;
+  vertical-align: bottom;
+  text-align: center;
+  font-weight: 400;
+  font-size: .7rem;
+  opacity: .75;
+}
+.tm-year span {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.tm-cell {
+  width: 1.3rem;
+  min-width: 1.3rem;
+  height: 1.5rem;
+  text-align: center;
+  vertical-align: middle;
+}
+/* In the matrix, dots are blocks centred in the cell: an inline-flex dot with
+   no text sits on a different baseline than one with a digit. */
+.tm-cell .tm-dot {
+  display: flex;
+  margin: 0 auto;
+}
+.tm-row:hover .tm-cell,
+.tm-row:hover .tm-name { background-color: rgba(128, 128, 128, .12); }
+.tm-degree th {
+  position: sticky;
+  left: 0;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: .9rem 0 .2rem !important;
+  border-bottom: 1px solid rgba(128, 128, 128, .3);
+}
+.tm-degree[hidden] { display: none; }
+.tm-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 .2rem;
+  box-sizing: border-box;
+  border-radius: .55rem;
+  background: #3f78d6;
+  color: #fff;
+  font-size: .62rem;
+  font-weight: 600;
+  line-height: 1;
+}
+body.dark .tm-dot { background: #5b97e0; color: #0d1117; }
+.tm-legend {
+  margin: .4rem 0 1.8rem;
+  font-size: .75rem;
+}
+.tm-legend .tm-dot { margin: 0 .25rem 0 .9rem; }
+.tm-legend .tm-dot:first-child { margin-left: 0; }
+
+.tm-item {
+  padding: .45rem 0;
+  border-bottom: 1px solid rgba(128, 128, 128, .15);
+}
+.tm-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+}
+.tm-item-name { font-weight: 600; }
+.tm-item-deg {
+  font-size: .85rem;
+  opacity: .7;
+  white-space: nowrap;
+}
+.tm-item-years {
+  font-size: .85rem;
+  opacity: .8;
+  margin-top: .1rem;
+}
+.tm-item-other {
+  font-size: .78rem;
+  line-height: 1.4;
+  opacity: .75;
+  margin-top: .3rem;
+}
+
+.teaching-alt {
+  text-align: right;
+  font-size: .9rem;
+  margin: 0 0 .5rem;
+}
+
+/* Projects summary table: projects x years timeline. */
+.pj-scroll { overflow-x: auto; padding-bottom: .4rem; }
+.pj-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .82rem;
+}
+.pj-table th,
+.pj-table td { padding: 0; }
+.pj-table tbody tr,
+.pj-table tbody tr:nth-of-type(odd) { background: transparent !important; }
+.pj-table td,
+.pj-table th { border-top: 0 !important; }
+.pj-name {
+  text-align: left;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: .12rem .8rem .12rem 0 !important;
+}
+.pj-type {
+  text-align: left;
+  font-size: .72rem;
+  opacity: .65;
+  white-space: nowrap;
+  padding: .12rem .8rem .12rem 0 !important;
+}
+.pj-corner { font-weight: 600; vertical-align: bottom; }
+.pj-year {
+  height: 3.2rem;
+  width: 1.15rem;
+  min-width: 1.15rem;
+  vertical-align: bottom;
+  text-align: center;
+  font-weight: 400;
+  font-size: .68rem;
+  opacity: .75;
+}
+.pj-year span {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.pj-cell {
+  width: 1.15rem;
+  min-width: 1.15rem;
+  height: 1.3rem;
+  border-left: 1px solid rgba(128, 128, 128, .12);
+}
+.pj-on.pj-pi { background: #3f78d6; }
+.pj-on.pj-intl { background: #2a9d8f; }
+.pj-on.pj-nat { background: #8a63d2; }
+.pj-on.pj-net { background: #8c8c8c; }
+body.dark .pj-on.pj-pi { background: #5b97e0; }
+body.dark .pj-on.pj-intl { background: #3fb8a9; }
+body.dark .pj-on.pj-nat { background: #a384e6; }
+body.dark .pj-on.pj-net { background: #9a9a9a; }
+.pj-table tbody tr:hover .pj-name,
+.pj-table tbody tr:hover .pj-type { opacity: 1; }
+/* No opacity on the legend: it would dim the colour keys so they no longer
+   match the chart. */
+.pj-legend {
+  margin: .4rem 0 .5rem;
+  font-size: .75rem;
+}
+.pj-key {
+  display: inline-block;
+  width: .9rem;
+  height: .9rem;
+  border-radius: 2px;
+  margin: 0 .3rem -.15rem 1rem;
+}
+.pj-key:first-child { margin-left: 0; }
+.pj-key.pj-pi { background: #3f78d6; }
+.pj-key.pj-intl { background: #2a9d8f; }
+.pj-key.pj-nat { background: #8a63d2; }
+.pj-key.pj-net { background: #8c8c8c; }
+body.dark .pj-key.pj-pi { background: #5b97e0; }
+body.dark .pj-key.pj-intl { background: #3fb8a9; }
+body.dark .pj-key.pj-nat { background: #a384e6; }
+body.dark .pj-key.pj-net { background: #9a9a9a; }
+
+/* Publications summary table: publication types x years, with counts. */
+.pb-scroll { overflow-x: auto; padding-bottom: .4rem; margin-bottom: 1.5rem; }
+.pb-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .8rem;
+}
+.pb-table th,
+.pb-table td { padding: 0; }
+.pb-table tbody tr,
+.pb-table tfoot tr,
+.pb-table tbody tr:nth-of-type(odd) { background: transparent !important; }
+.pb-table td,
+.pb-table th { border-top: 0 !important; }
+.pb-name {
+  text-align: left;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: .12rem .8rem .12rem 0 !important;
+}
+.pb-corner { font-weight: 600; vertical-align: bottom; }
+.pb-total {
+  text-align: right;
+  font-weight: 600;
+  padding: 0 .9rem 0 .4rem !important;
+}
+.pb-year {
+  height: 2.6rem;
+  width: 1.4rem;
+  min-width: 1.4rem;
+  vertical-align: bottom;
+  text-align: center;
+  font-weight: 400;
+  font-size: .68rem;
+  opacity: .75;
+}
+.pb-year span {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.pb-cell {
+  width: 1.4rem;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  text-align: center;
+  vertical-align: middle;
+  border-left: 1px solid rgba(128, 128, 128, .12);
+}
+.pb-table .pb-cell.pb-n1 { background: rgba(63, 120, 214, .28); }
+.pb-table .pb-cell.pb-n2 { background: rgba(63, 120, 214, .55); }
+.pb-table .pb-cell.pb-n3 { background: rgba(63, 120, 214, .9); color: #fff; font-weight: 600; }
+body.dark .pb-table .pb-cell.pb-n1 { background: rgba(91, 151, 224, .30); }
+body.dark .pb-table .pb-cell.pb-n2 { background: rgba(91, 151, 224, .60); }
+body.dark .pb-table .pb-cell.pb-n3 { background: rgba(91, 151, 224, .95); color: #0d1117; }
+.pb-table tfoot .pb-name,
+.pb-table tfoot .pb-total,
+.pb-sum {
+  font-weight: 600;
+  border-top: 1px solid rgba(128, 128, 128, .4) !important;
+}
+
+.pb-note {
+  margin: -1rem 0 1.5rem;
+  font-size: .75rem;
+  opacity: .75;
 }

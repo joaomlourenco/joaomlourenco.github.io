@@ -1,7 +1,10 @@
 ---
-title: "Sérgio Faustino"
+title: "Sérgio Manuel Bertão do Carmo Faustino"
 date: 2009-06-01
 degree: "BSc"
+studentnumber: "14686"
 thesis:
-  other: "Internship at Edisoft: RTEMS - Real Time Executive for Multiprocessing Systems. Grade 17/20."
+  title: "Suporte para o sistema operativo RTEMS (Real-Time Operating System for Multiprocessor Systems)."
+  coadviser: "Teresa Cardoso (EDISOFT - Empresa de Serviços e Desenvolvimento de Software, SA)"
+  other: "Internship at EDISOFT - Empresa de Serviços e Desenvolvimento de Software, SA, Almada, Portugal. Grade 17/20."
 ---

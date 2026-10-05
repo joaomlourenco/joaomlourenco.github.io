@@ -3,6 +3,7 @@ title: "The NOVAthesis LaTeX Template User's Manual"
 date: 2021-01-01
 publishDate: 2021-01-01
 authors: ["**João M. Lourenço**"]
+cite_key: "novathesis-manual:2026:jlourenco"
 publication_types: ["3"]
 abstract: "N/A"
 featured: true

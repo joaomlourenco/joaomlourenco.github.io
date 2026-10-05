@@ -7,8 +7,20 @@
     <div class="article-style">{{ . }}</div>
   {{ end }}
 
+  <nav class="advisees-toc" aria-label="Advisees sections">
+    <a href="#postdoc">Postdoc</a>
+    <a href="#phd">PhD</a>
+    <a href="#msc">MSc</a>
+    <a href="{{ (site.GetPage "/advisees/bsc").RelPermalink }}">BSc</a>
+  </nav>
+
+  <div class="advisees-summary-table">
+    {{ partial "advisees_summary.html" (dict "pages" .Pages) }}
+  </div>
+
   <div class="advisees-widget">
-    {{ partial "advisees_grouped_list" (dict "pages" .Pages) }}
+    {{/* BSc advisees (internships) have their own page, linked above. */}}
+    {{ partial "advisees_grouped_list" (dict "pages" .Pages "degrees" (slice "Postdoc" "PhD" "MSc")) }}
   </div>
 </div>
 

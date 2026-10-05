@@ -1,7 +1,10 @@
 ---
-title: "Luís Coelho"
+title: "Luís Duarte Carrilho Coelho"
 date: 2018-06-01
 degree: "BSc"
+studentnumber: "48550"
 thesis:
-  title: "Development of an Android App"
+  title: "Android App"
+  coadviser: "Filipe Grangeiro (TI Tecnologia Informática, SA)"
+  other: "Internship at TI Tecnologia Informática, SA, Lisboa, Portugal."
 ---

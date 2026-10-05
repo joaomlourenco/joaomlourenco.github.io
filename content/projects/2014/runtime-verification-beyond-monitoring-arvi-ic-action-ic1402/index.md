@@ -2,6 +2,7 @@
 title: "Runtime Verification beyond Monitoring (ARVI), (IC Action IC1402)"
 name: "Runtime Verification beyond Monitoring (ARVI)"
 reference: "IC Action IC1402"
+short: "ARVI"
 date: 2014-01-01
 category: "Research Networks"
 role: "MC Member: João Lourenço (FCT-NOVA)"

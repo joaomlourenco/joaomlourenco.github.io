@@ -1,6 +1,7 @@
 ---
 title: "Zdenek Letko"
 date: 2015-06-01
+linkedin: "https://www.linkedin.com/in/zdenek-letko-26064848/"
 degree: "Postdoc"
 thesis:
   title: "Validation of Concurrent Programs"

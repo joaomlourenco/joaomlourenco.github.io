@@ -1,5 +1,5 @@
 ---
-title: "Visual Programmin and Debugging"
+title: "Visual Programming and Debugging"
 date: 1997-01-01
 category: "International Projects"
 role: "PI: José C. Cunha (FCT-NOVA)"

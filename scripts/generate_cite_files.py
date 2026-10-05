@@ -23,6 +23,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIB_PATHS = [
     os.path.join(ROOT, "bibliography-source", "jml-all.bib"),
     os.path.join(ROOT, "bibliography-source", "education.bib"),
+    os.path.join(ROOT, "bibliography-source", "project-reports.bib"),
+    os.path.join(ROOT, "bibliography-source", "manuals.bib"),
 ]
 # Recursive (**) since publications now live under content/publications/<year>/<slug>/.
 PUB_GLOB = os.path.join(ROOT, "content", "publications", "**", "index.md")
@@ -81,7 +83,14 @@ def main():
             continue
         title = m.group(1)
         tn = norm(title)
-        cands = by_norm.get(tn)
+        # Optional "cite_key: <bib key>" in the page's front matter forces the entry
+        # (for pages whose title differs from the bib title).
+        ck = re.search(r'^cite_key:\s*"?([^"\n]+)"?\s*$', text, re.MULTILINE)
+        cands = None
+        if ck:
+            cands = [e for e in entries if e["key"] == ck.group(1).strip()] or None
+        if not cands:
+            cands = by_norm.get(tn)
         if not cands:
             close = difflib.get_close_matches(tn, by_norm.keys(), n=1, cutoff=MATCH_CUTOFF)
             cands = by_norm[close[0]] if close else None

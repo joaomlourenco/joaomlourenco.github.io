@@ -5,5 +5,5 @@ degree: "MSc"
 thesis:
   title: "Controlo de Concorrência Centrado nos Dados"
   mainadviser: "Hervé Paulino (FCT-NOVA)"
-  other: "Work done in an industrial setting."
+  other: ""
 ---

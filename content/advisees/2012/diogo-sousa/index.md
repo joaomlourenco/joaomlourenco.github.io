@@ -1,6 +1,7 @@
 ---
 title: "Diogo Sousa"
 date: 2012-06-01
+linkedin: "https://www.linkedin.com/in/orium/"
 degree: "BSc"
 thesis:
   other: "Synergy-VM project research grant: Detection of Atomicity Violations in Concurrent Programs."

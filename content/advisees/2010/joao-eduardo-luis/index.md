@@ -1,6 +1,7 @@
 ---
 title: "João Eduardo Luís"
 date: 2010-06-01
+linkedin: "https://www.linkedin.com/in/jecluis/"
 degree: "MSc"
 thesis:
   title: "TxBtrfs — A Transactional Snapshot-based File System"

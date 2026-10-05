@@ -2,6 +2,7 @@
 title: "Curriculum development for High Performance Computing and Grid Computing — Development of a joint module in high performance computing and grid computing (CN/ASIA-LINK/020)"
 name: "Curriculum development for High Performance Computing and Grid Computing — Development of a joint module in high performance computing and grid computing"
 reference: "CN/ASIA-LINK/020"
+short: "HPC and Grid curriculum (Asia-Link)"
 date: 2005-01-01
 category: "International Projects"
 role: "Participant"

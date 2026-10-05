@@ -1,6 +1,7 @@
 ---
 title: "Afonso Mak Gramocha da Costa Silva"
 date: 2021-02-01
+linkedin: "https://www.linkedin.com/in/afonso-mak-silva/"
 degree: "MSc"
 thesis:
   title: "Energy Optimization of OpenCV Algorithms for Android"

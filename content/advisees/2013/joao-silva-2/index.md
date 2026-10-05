@@ -1,6 +1,7 @@
 ---
 title: "João André Almeida e Silva"
 date: 2013-11-01
+linkedin: "https://www.linkedin.com/in/jaasilva/"
 degree: "MSc"
 thesis:
   title: "[Partial Replication in Distributed Software Transactional Memory](http://hdl.handle.net/10362/10769)"

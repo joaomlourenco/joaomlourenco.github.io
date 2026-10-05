@@ -3,5 +3,5 @@ title: "João Martins"
 date: 2013-06-01
 degree: "MSc"
 thesis:
-  title: "Lightweight Monitoring of Transactional Memory"
+  title: "[Lightweight Monitoring of Transactional Memory](http://hdl.handle.net/10362/11426)"
 ---

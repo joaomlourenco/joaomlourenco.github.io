@@ -16,7 +16,7 @@
       <ul class="projects-list">
         {{ range $group }}
           {{ $name := .Params.name | default .Title }}
-          <li class="projects-item">
+          <li class="projects-item" id="{{ .File.ContentBaseName }}">
             <div class="projects-item-header">
               <span class="projects-name">
                 {{ if .Params.link }}<a href="{{ .Params.link }}" target="_blank" rel="noopener">{{ $name }}</a>{{ else }}{{ $name }}{{ end }}

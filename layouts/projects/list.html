@@ -7,6 +7,10 @@
     <div class="article-style">{{ . }}</div>
   {{ end }}
 
+  <div class="projects-summary">
+    {{ partial "projects_summary.html" (dict "pages" .Pages) }}
+  </div>
+
   <div class="projects-widget">
     {{ partial "projects_grouped_list" (dict "pages" .Pages) }}
   </div>
