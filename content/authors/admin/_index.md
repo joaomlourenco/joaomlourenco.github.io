@@ -14,7 +14,7 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: Associate Professor & Co-Director of UNINOVA
+role: Co-Director of UNINOVA & Associate Professor
 
 # Organizations/Affiliations to show in About widget
 organizations:
@@ -24,7 +24,7 @@ organizations:
     url: https://www.uninova.pt
 
 # Short bio (displayed in user profile at end of posts)
-bio: Associate Professor at NOVA FCT and Co-Director of UNINOVA, working on in-memory data management, concurrent program testing/debugging, and edge/fog computing. Author of the NOVAthesis LaTeX template.
+bio: Co-Director of UNINOVA and Associate Professor at NOVA FCT, working on in-memory data management, concurrent program testing/debugging, and edge/fog computing. Author of the NOVAthesis LaTeX template.
 
 # Interests to show in About widget
 interests:
@@ -74,9 +74,9 @@ highlight_name: true # Highlight the author in author lists? (true/false)
 
 ### About me ##
 
-I am an Associate Professor at the [Computer Science Department](https://www.di.fct.unl.pt) of [NOVA School of Science and Technology](https://www.fct.unl.pt) (NOVA FCT), NOVA University Lisbon.  Since 2023 I am also Co-Director of [UNINOVA — Institute for the Development of New Technologies](https://www.uninova.pt), a non-profit R&D institute. From 2019 to 2022 I was also an Adjunct Professor at [Ontario Tech University](https://ontariotechu.ca), Canada.
+I am Co-Director of [UNINOVA — Institute for the Development of New Technologies](https://www.uninova.pt), a non-profit R&D institute. I am also an Associate Professor at the [Computer Science Department](https://www.di.fct.unl.pt) of [NOVA School of Science and Technology](https://www.fct.unl.pt) (NOVA FCT), NOVA University Lisbon. From 2019 to 2022 I was also an Adjunct Professor at [Ontario Tech University](https://ontariotechu.ca), Canada.
 
-I received my PhD from NOVA University Lisbon in 2004, with a thesis on debugging of distributed programs, and I am a founding member of the [NOVA LINCS](https://nova-lincs.di.fct.unl.pt) Research Center. My research focuses on in-memory data management for parallel and large-scale computing systems, verification, testing and debugging of concurrent programs, and edge/fog computing. I am co-author of more than 50 articles and papers, and I have been a visiting researcher at IBM Research Haifa (2011), University of São Paulo at São Carlos (2014), and Brno University of Technology (2015).
+I received my PhD from NOVA University Lisbon in 2004, with a thesis on debugging of distributed programs, and I am a founding member of the [NOVA LINCS](https://nova-lincs.di.fct.unl.pt) Research Center. My research focuses on verification, testing and debugging of concurrent programs, in-memory data management for parallel and large-scale computing systems, and edge/fog computing. I am co-author of more than 50 articles and papers, and I have been a visiting researcher at IBM Research Haifa (2011), University of São Paulo at São Carlos (2014), and Brno University of Technology (2015).
 
 I am also a regular contributor to the LaTeX community, and the author of the popular [**nova**thesis](https://novathesis.org) LaTeX thesis template.
 

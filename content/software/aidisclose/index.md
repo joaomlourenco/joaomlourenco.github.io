@@ -2,7 +2,7 @@
 title: "📜🪶 aidisclose"
 date: 2026-06-10
 show_date: false
-summary: "Generative AI disclosure checklist and statements for academic writing, used in the **nova**thesis project. The AI Disclosure Statement generator in the companion site aidisclose.org exports in LaTeX and Word format."
+summary: "Generative AI disclosure checklist and statements for academic writing, used in the **nova**thesis project. The AI Disclosure Statement generator in the companion site [aidisclose.org](aidisclose.org) exports in LaTeX and Word format."
 featured: true
 links:
   - icon_pack: fas

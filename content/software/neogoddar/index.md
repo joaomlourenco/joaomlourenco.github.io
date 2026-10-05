@@ -1,5 +1,5 @@
 ---
-title: "NeoGoDDaR"
+title: "📦💻 NeoGoDDaR"
 date: 2026-02-27
 show_date: false
 summary: "A Deadlock Detection and Resolution tool for Go programs, distributed as a Docker image."
