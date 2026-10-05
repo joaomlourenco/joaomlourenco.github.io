@@ -1,0 +1,201 @@
+{{/* Teaching archive, default layout: a matrix with the
+     courses in the rows and the academic years in the columns, followed by a
+     per-course list (degree, years taught, comment).  The classic list
+     (layouts/_default/teaching-by-year.html, "Full list by academic year") is kept.  Everything is server-rendered
+     in a degree + most recent first order; the script at the end re-sorts the
+     rows (default: newest first). */}}
+
+{{ $pages := where site.RegularPages "Section" "teaching" }}
+{{ $degree_order := slice "PhD" "Doctoral School" "MSc" "BSc" "Lic" }}
+{{ $ranks := dict "PhD" 1 "Doctoral School" 2 "MSc" 3 "BSc" 4 "Lic" 5 }}
+
+{{/* Academic years present, most recent first. */}}
+{{ $years := slice }}
+{{ range $pages }}{{ $years = $years | append .Params.academic_year }}{{ end }}
+{{ $years = $years | uniq | sort | collections.Reverse }}
+
+{{/* One group per (course, degree). */}}
+{{ $keys := slice }}
+{{ range $pages }}{{ $keys = $keys | append (printf "%s|%s" .Title .Params.degree) }}{{ end }}
+{{ $keys = $keys | uniq }}
+{{ $groups := slice }}
+{{ range $keys }}
+  {{ $parts := split . "|" }}
+  {{ $title := index $parts 0 }}
+  {{ $degree := index $parts 1 }}
+  {{ $items := where (where $pages "Title" $title) "Params.degree" $degree }}
+  {{ $items = sort $items "Date" "desc" }}
+  {{ $latest := (index $items 0).Date.Unix }}
+  {{ $groups = $groups | append (dict "title" $title "degree" $degree "rank" (index $ranks $degree) "latest" $latest "items" $items) }}
+{{ end }}
+{{ $groups = sort $groups "title" "asc" }}
+{{ $groups = sort $groups "latest" "desc" }}
+
+<div class="universal-wrapper pt-3 tm-page">
+  <div class="tm-head">
+    <h1>{{ .Title }}</h1>
+    <div class="tm-controls">
+      <a class="tm-classic" href="{{ (site.GetPage "/teaching-by-year").RelPermalink }}">Full list by academic year</a>
+      <div class="tm-sort">
+        <button type="button" id="tm-sort-btn" class="tm-btn" aria-haspopup="true" aria-expanded="false">
+          <span class="tm-sort-label">Sort: <span id="tm-sort-current">Newest first</span></span> <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <ul id="tm-sort-menu" class="tm-menu" role="menu" hidden>
+          <li role="none"><button type="button" role="menuitemradio" data-sort="date">Newest first</button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-sort="alpha">A–Z</button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-sort="degree-date">Degree · newest first</button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-sort="degree-alpha">Degree · A–Z</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tm-scroll">
+    <table class="tm-table" id="tm-table">
+      <thead>
+        <tr>
+          <th class="tm-name tm-corner" scope="col">Course</th>
+          {{ range $years }}<th class="tm-year" scope="col"><span>{{ . }}</span></th>{{ end }}
+        </tr>
+      </thead>
+      <tbody id="tm-body">
+        {{ range $degree_order }}
+          {{ $deg := . }}
+          {{ $in_deg := where $groups "degree" $deg }}
+          {{ if $in_deg }}
+            <tr class="tm-degree" data-degree="{{ $deg }}" data-rank="{{ index $ranks $deg }}"><th colspan="{{ add 1 (len $years) }}" scope="colgroup">{{ if eq $deg "Doctoral School" }}Doctoral School · PhD{{ else }}{{ $deg }}{{ end }}</th></tr>
+            {{ range $in_deg }}
+              {{ $g := . }}
+              <tr class="tm-row" data-title="{{ $g.title }}" data-rank="{{ $g.rank }}" data-latest="{{ $g.latest }}">
+                <th class="tm-name" scope="row">{{ $g.title }}<span class="tm-deg">{{ $g.degree }}</span></th>
+                {{ range $years }}
+                  {{ $y := . }}
+                  {{ $in := where $g.items "Params.academic_year" $y }}
+                  {{ if $in }}
+                    {{ $sem := (index $in 0).Params.semester }}
+                    {{ $digit := "" }}
+                    {{ if eq $sem "1st" }}{{ $digit = "1" }}{{ else if eq $sem "2nd" }}{{ $digit = "2" }}{{ end }}
+                    {{ if gt (len $in) 1 }}{{ $digit = printf "×%d" (len $in) }}{{ end }}
+                    <td class="tm-cell"><span class="tm-dot" title="{{ $g.title }} · {{ $y }}{{ with $sem }} · {{ . }} semester{{ end }}{{ if gt (len $in) 1 }} · {{ len $in }} editions{{ end }}">{{ $digit }}</span></td>
+                  {{ else }}
+                    <td class="tm-cell"></td>
+                  {{ end }}
+                {{ end }}
+              </tr>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+  <p class="tm-legend"><span class="tm-dot">1</span> 1st semester <span class="tm-dot">2</span> 2nd semester <span class="tm-dot">×2</span> two or more editions in the same year <span class="tm-dot"></span> taught (no semester, e.g. Doctoral School courses)</p>
+
+  <div class="tm-list" id="tm-list">
+    {{ range $groups }}
+      {{ $g := . }}
+      {{ $others := slice }}
+      {{ range $g.items }}{{ with .Params.other }}{{ $others = $others | append . }}{{ end }}{{ end }}
+      {{ $others = $others | uniq }}
+      <article class="tm-item" data-title="{{ $g.title }}" data-rank="{{ $g.rank }}" data-latest="{{ $g.latest }}">
+        <div class="tm-item-head">
+          <span class="tm-item-name">{{ $g.title }}</span>
+          <span class="tm-item-deg">{{ if eq $g.degree "Doctoral School" }}Doctoral School · PhD{{ else }}{{ $g.degree }}{{ end }}</span>
+        </div>
+        <div class="tm-item-years">
+          {{ range $i, $p := $g.items }}{{ if $i }}, {{ end }}{{ $p.Params.academic_year }}{{ $yn := len (where $g.items "Params.academic_year" $p.Params.academic_year) }}{{ if gt $yn 1 }} (×{{ $yn }}){{ else }}{{ with $p.Params.semester }} ({{ . }}){{ end }}{{ end }}{{ end }}
+        </div>
+        {{ range $others }}
+          {{ $o := . }}
+          {{ $with := where $g.items "Params.other" $o }}
+          <div class="tm-item-other">
+            {{ if or (gt (len $others) 1) (lt (len $with) (len $g.items)) }}<em>{{ range $i, $p := $with }}{{ if $i }}, {{ end }}{{ $p.Params.academic_year }}{{ end }}:</em> {{ end }}{{ $o | markdownify }}
+          </div>
+        {{ end }}
+      </article>
+    {{ end }}
+  </div>
+</div>
+
+<script>
+(function () {
+  var DEFAULT = 'date';
+  var MODES = {
+    'degree-date': 'Degree · newest first',
+    'degree-alpha': 'Degree · A–Z',
+    'date': 'Newest first',
+    'alpha': 'A–Z'
+  };
+  var body = document.getElementById('tm-body');
+  var list = document.getElementById('tm-list');
+  var btn = document.getElementById('tm-sort-btn');
+  var menu = document.getElementById('tm-sort-menu');
+  var current = document.getElementById('tm-sort-current');
+  var table = document.getElementById('tm-table');
+  var rows = Array.prototype.slice.call(body.querySelectorAll('.tm-row'));
+  var heads = Array.prototype.slice.call(body.querySelectorAll('.tm-degree'));
+  var items = Array.prototype.slice.call(list.querySelectorAll('.tm-item'));
+
+  function num(el, k) { return parseInt(el.getAttribute('data-' + k), 10); }
+  function title(el) { return el.getAttribute('data-title'); }
+  function alpha(a, b) { return title(a).localeCompare(title(b), 'en', { sensitivity: 'base' }); }
+  function newest(a, b) { return num(b, 'latest') - num(a, 'latest') || alpha(a, b); }
+  function byDegree(inner) { return function (a, b) { return num(a, 'rank') - num(b, 'rank') || inner(a, b); }; }
+
+  var COMPARE = {
+    'degree-date': byDegree(newest),
+    'degree-alpha': byDegree(alpha),
+    'date': newest,
+    'alpha': function (a, b) { return alpha(a, b) || num(a, 'rank') - num(b, 'rank'); }
+  };
+
+  function apply(mode) {
+    if (!COMPARE[mode]) mode = DEFAULT;
+    var grouped = mode.indexOf('degree') === 0;
+    var sorted = rows.slice().sort(COMPARE[mode]);
+    var lastRank = null;
+    sorted.forEach(function (r) {
+      if (grouped && num(r, 'rank') !== lastRank) {
+        lastRank = num(r, 'rank');
+        heads.forEach(function (h) { if (num(h, 'rank') === lastRank) body.appendChild(h); });
+      }
+      body.appendChild(r);
+    });
+    heads.forEach(function (h) { h.hidden = !grouped; });
+    table.classList.toggle('tm-grouped', grouped);
+    items.slice().sort(COMPARE[mode]).forEach(function (i) { list.appendChild(i); });
+    current.textContent = MODES[mode];
+    Array.prototype.forEach.call(menu.querySelectorAll('button'), function (b) {
+      var on = b.getAttribute('data-sort') === mode;
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+      b.classList.toggle('tm-on', on);
+    });
+    try { localStorage.setItem('teaching-sort-v2', mode); } catch (e) {}
+  }
+
+  function toggle(open) {
+    menu.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function (e) { e.stopPropagation(); toggle(menu.hidden); });
+  menu.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-sort]');
+    if (!b) return;
+    apply(b.getAttribute('data-sort'));
+    toggle(false);
+  });
+  document.addEventListener('click', function () { toggle(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { toggle(false); btn.focus(); } });
+
+  /* Sticky first column needs an opaque background: copy the page's. */
+  function syncBg() {
+    var c = getComputedStyle(document.body).backgroundColor;
+    document.querySelector('.tm-page').style.setProperty('--tm-bg', c);
+  }
+  syncBg();
+  new MutationObserver(syncBg).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+  var saved = null;
+  try { saved = localStorage.getItem('teaching-sort-v2'); } catch (e) {}
+  apply(saved || DEFAULT);
+})();
+</script>

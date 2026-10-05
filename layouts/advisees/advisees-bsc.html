@@ -1,0 +1,25 @@
+{{- define "main" -}}
+
+{{/* Plain title (the page_header partial would print a "Posted <date>" line). */}}
+<div class="universal-wrapper pt-3">
+  <h1>{{ .Title }}</h1>
+</div>
+
+<div class="universal-wrapper">
+  {{ with .Content }}
+    <div class="article-style">{{ . }}</div>
+  {{ end }}
+
+  <nav class="advisees-toc" aria-label="Advisees sections">
+    <a href="{{ (site.GetPage "/advisees").RelPermalink }}#postdoc">Postdoc</a>
+    <a href="{{ (site.GetPage "/advisees").RelPermalink }}#phd">PhD</a>
+    <a href="{{ (site.GetPage "/advisees").RelPermalink }}#msc">MSc</a>
+    <a href="{{ .RelPermalink }}" aria-current="page">BSc</a>
+  </nav>
+
+  <div class="advisees-widget">
+    {{ partial "advisees_grouped_list" (dict "pages" (where site.RegularPages "Section" "advisees") "degrees" (slice "BSc")) }}
+  </div>
+</div>
+
+{{- end -}}

@@ -1,0 +1,65 @@
+{{/* Summary table for the advisees archive: how many advisees of each type
+     concluded per year (rows = Postdoc / PhD / MSc / BSc, columns = years,
+     most recent first), with totals.  Future years are expected conclusions.
+     Reuses the styles of the publications summary table (pb-*).
+     Input: dict "pages" (list of advisee Pages) */}}
+
+{{ $pages := .pages }}
+{{ $degrees := slice "Postdoc" "PhD" "MSc" "BSc" }}
+{{ $with_degree := slice }}
+{{ range $pages }}{{ if .Params.degree }}{{ $with_degree = $with_degree | append . }}{{ end }}{{ end }}
+
+{{ $min := 9999 }}
+{{ $max := 0 }}
+{{ range $with_degree }}
+  {{ $y := .Date.Year }}
+  {{ if lt $y $min }}{{ $min = $y }}{{ end }}
+  {{ if gt $y $max }}{{ $max = $y }}{{ end }}
+{{ end }}
+{{ $years := slice }}
+{{ range seq $min $max }}{{ $years = $years | append . }}{{ end }}
+{{ $years = collections.Reverse $years }}
+{{ $this_year := now.Year }}
+
+<div class="pb-scroll">
+  <table class="pb-table">
+    <thead>
+      <tr>
+        <th class="pb-name pb-corner" scope="col">Advisees</th>
+        <th class="pb-total pb-corner" scope="col">Total</th>
+        {{ range $years }}<th class="pb-year" scope="col"><span>{{ . }}{{ if gt . $this_year }} (exp.){{ end }}</span></th>{{ end }}
+      </tr>
+    </thead>
+    <tbody>
+      {{ range $degrees }}
+        {{ $d := . }}
+        {{ $of := where $with_degree "Params.degree" $d }}
+        {{ if $of }}
+          <tr>
+            <th class="pb-name" scope="row">{{ $d }}</th>
+            <td class="pb-total">{{ len $of }}</td>
+            {{ range $years }}
+              {{ $n := len (where $of "Date.Year" .) }}
+              {{ if $n }}
+                <td class="pb-cell pb-n{{ if ge $n 4 }}3{{ else if ge $n 2 }}2{{ else }}1{{ end }}" title="{{ $n }} {{ $d }}, {{ . }}{{ if gt . $this_year }} (expected){{ end }}">{{ $n }}</td>
+              {{ else }}
+                <td class="pb-cell"></td>
+              {{ end }}
+            {{ end }}
+          </tr>
+        {{ end }}
+      {{ end }}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th class="pb-name" scope="row">All</th>
+        <td class="pb-total">{{ len $with_degree }}</td>
+        {{ range $years }}
+          {{ $n := len (where $with_degree "Date.Year" .) }}
+          <td class="pb-cell pb-sum">{{ with $n }}{{ . }}{{ end }}</td>
+        {{ end }}
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<p class="pb-note">Year of conclusion (or expected conclusion, in the most recent columns). BSc advisees are listed on <a href="{{ (site.GetPage "/advisees/bsc").RelPermalink }}">their own page</a>.</p>

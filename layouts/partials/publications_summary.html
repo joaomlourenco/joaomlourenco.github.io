@@ -1,0 +1,68 @@
+{{/* Summary table for the publications archive: how many publications of each
+     type per year (rows = types, columns = years, most recent first), with
+     row, column and grand totals.  Counts come from the pages' "publication_types".
+     Input: dict "pages" (list of publication Pages) */}}
+
+{{ $pubs := .pages }}
+{{ $types := slice
+  (dict "code" "2" "label" "Journal articles")
+  (dict "code" "1" "label" "Conference papers")
+  (dict "code" "6" "label" "Book chapters")
+  (dict "code" "5" "label" "Books")
+  (dict "code" "4" "label" "Reports")
+  (dict "code" "3" "label" "Preprints")
+  (dict "code" "7" "label" "Theses")
+}}
+
+{{ $min := 9999 }}
+{{ $max := 0 }}
+{{ range $pubs }}
+  {{ $y := .Date.Year }}
+  {{ if lt $y $min }}{{ $min = $y }}{{ end }}
+  {{ if gt $y $max }}{{ $max = $y }}{{ end }}
+{{ end }}
+{{ $years := slice }}
+{{ range seq $min $max }}{{ $years = $years | append . }}{{ end }}
+{{ $years = collections.Reverse $years }}
+
+<div class="pb-scroll">
+  <table class="pb-table">
+    <thead>
+      <tr>
+        <th class="pb-name pb-corner" scope="col">Type</th>
+        <th class="pb-total pb-corner" scope="col">Total</th>
+        {{ range $years }}<th class="pb-year" scope="col"><span>{{ . }}</span></th>{{ end }}
+      </tr>
+    </thead>
+    <tbody>
+      {{ range $types }}
+        {{ $t := . }}
+        {{ $of_type := where $pubs "Params.publication_types" "intersect" (slice $t.code) }}
+        {{ if $of_type }}
+          <tr>
+            <th class="pb-name" scope="row">{{ $t.label }}</th>
+            <td class="pb-total">{{ len $of_type }}</td>
+            {{ range $years }}
+              {{ $n := len (where $of_type "Date.Year" .) }}
+              {{ if $n }}
+                <td class="pb-cell pb-n{{ if ge $n 4 }}3{{ else if ge $n 2 }}2{{ else }}1{{ end }}" title="{{ $n }} {{ $t.label | lower }}, {{ . }}">{{ $n }}</td>
+              {{ else }}
+                <td class="pb-cell"></td>
+              {{ end }}
+            {{ end }}
+          </tr>
+        {{ end }}
+      {{ end }}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th class="pb-name" scope="row">All</th>
+        <td class="pb-total">{{ len $pubs }}</td>
+        {{ range $years }}
+          {{ $n := len (where $pubs "Date.Year" .) }}
+          <td class="pb-cell pb-sum">{{ with $n }}{{ . }}{{ end }}</td>
+        {{ end }}
+      </tr>
+    </tfoot>
+  </table>
+</div>

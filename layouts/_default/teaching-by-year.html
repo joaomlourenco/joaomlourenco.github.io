@@ -1,0 +1,17 @@
+{{- define "main" -}}
+
+{{/* "Full list by academic year": the original teaching archive, one heading
+     per academic year.  The default /teaching/ page is the courses x years
+     overview (partials/teaching_overview.html). */}}
+
+{{ partial "page_header.html" . }}
+
+<div class="universal-wrapper">
+  <p class="teaching-alt"><a href="{{ (site.GetPage "/teaching").RelPermalink }}">Overview: courses × academic years</a></p>
+
+  <div class="teaching-widget">
+    {{ partial "teaching_grouped_list" (dict "pages" (where site.RegularPages "Section" "teaching")) }}
+  </div>
+</div>
+
+{{- end -}}

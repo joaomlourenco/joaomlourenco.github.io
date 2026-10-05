@@ -1,0 +1,62 @@
+{{/* Summary table for the projects archive: one row per project (most recent
+     start first), one column per year (most recent first); the cells of the
+     years a project was active are filled, coloured by category.
+     Input: dict "pages" (list of project Pages) */}}
+
+{{ $cat_class := dict "Principal Investigator" "pi" "International Projects" "intl" "National Projects" "nat" "Research Networks" "net" }}
+{{ $cat_label := dict "Principal Investigator" "PI" "International Projects" "International" "National Projects" "National" "Research Networks" "Network" }}
+
+{{ $rows := slice }}
+{{ $min := 9999 }}
+{{ $max := 0 }}
+{{ range .pages }}
+  {{ $ys := findRE `\d{4}` (.Params.period | default "") }}
+  {{ if not $ys }}{{ $ys = slice (.Date.Format "2006") }}{{ end }}
+  {{ $start := int (index $ys 0) }}
+  {{ $end := int (index $ys (sub (len $ys) 1)) }}
+  {{ if lt $start $min }}{{ $min = $start }}{{ end }}
+  {{ if gt $end $max }}{{ $max = $end }}{{ end }}
+  {{ $name := .Params.name | default .Title }}
+  {{ $short := .Params.short | default (replaceRE ` [—–-] .*$` "" $name) }}
+  {{ $rows = $rows | append (dict "short" $short "name" $name "start" $start "end" $end "key" (add (mul $start 10000) $end) "cat" .Params.category "period" .Params.period "id" .File.ContentBaseName) }}
+{{ end }}
+{{ $rows = sort $rows "key" "desc" }}
+
+{{ $years := slice }}
+{{ range seq $min $max }}{{ $years = $years | append . }}{{ end }}
+{{ $years = collections.Reverse $years }}
+
+<div class="pj-scroll">
+  <table class="pj-table">
+    <thead>
+      <tr>
+        <th class="pj-name pj-corner" scope="col">Project</th>
+        <th class="pj-type pj-corner" scope="col">Type</th>
+        {{ range $years }}<th class="pj-year" scope="col"><span>{{ . }}</span></th>{{ end }}
+      </tr>
+    </thead>
+    <tbody>
+      {{ range $rows }}
+        {{ $r := . }}
+        {{ $cls := index $cat_class $r.cat | default "net" }}
+        <tr>
+          <th class="pj-name" scope="row"><a href="#{{ $r.id }}">{{ $r.short }}</a></th>
+          <td class="pj-type">{{ index $cat_label $r.cat }}</td>
+          {{ range $years }}
+            {{ if and (ge . $r.start) (le . $r.end) }}
+              <td class="pj-cell pj-on pj-{{ $cls }}" title="{{ $r.name }} · {{ $r.period }}"></td>
+            {{ else }}
+              <td class="pj-cell"></td>
+            {{ end }}
+          {{ end }}
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</div>
+<p class="pj-legend">
+  <span class="pj-key pj-pi"></span> Principal Investigator
+  <span class="pj-key pj-intl"></span> International project
+  <span class="pj-key pj-nat"></span> National project
+  <span class="pj-key pj-net"></span> Research network
+</p>
