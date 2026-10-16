@@ -5,13 +5,13 @@
 
 {{ $pubs := .pages }}
 {{ $types := slice
-  (dict "code" "2" "label" "Journal articles")
-  (dict "code" "1" "label" "Conference papers")
-  (dict "code" "6" "label" "Book chapters")
-  (dict "code" "5" "label" "Books")
-  (dict "code" "4" "label" "Reports")
-  (dict "code" "3" "label" "Preprints")
-  (dict "code" "7" "label" "Theses")
+  (dict "code" "2" "label" "Journal articles" "icon" "📰")
+  (dict "code" "1" "label" "Conference papers" "icon" "🎤")
+  (dict "code" "6" "label" "Book chapters" "icon" "📖")
+  (dict "code" "5" "label" "Books" "icon" "📚")
+  (dict "code" "4" "label" "Reports" "icon" "📋")
+  (dict "code" "3" "label" "Preprints" "icon" "📝")
+  (dict "code" "7" "label" "Theses" "icon" "🎓")
 }}
 
 {{ $min := 9999 }}
@@ -40,7 +40,7 @@
         {{ $of_type := where $pubs "Params.publication_types" "intersect" (slice $t.code) }}
         {{ if $of_type }}
           <tr>
-            <th class="pb-name" scope="row">{{ $t.label }}</th>
+            <th class="pb-name" scope="row">{{ $t.icon }} {{ $t.label }}</th>
             <td class="pb-total">{{ len $of_type }}</td>
             {{ range $years }}
               {{ $n := len (where $of_type "Date.Year" .) }}
