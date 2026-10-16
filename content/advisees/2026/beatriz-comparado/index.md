@@ -1,7 +1,7 @@
 ---
 title: "Beatriz Comparado (Math Dep.)"
-date: 2026-10-01
-date_label: "October 2026"
+date: 2026-11-01
+date_label: "November 2026"
 linkedin: "https://www.linkedin.com/in/beatriz-comparado-a61789354/"
 degree: "MSc"
 thesis:
