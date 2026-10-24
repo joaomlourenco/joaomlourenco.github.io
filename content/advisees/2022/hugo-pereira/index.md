@@ -1,6 +1,7 @@
 ---
 title: "Hugo Pereira"
 date: 2022-06-01
+linkedin: "https://www.linkedin.com/in/hugogspereira"
 degree: "BSc"
 thesis:
   title: "Automatic Generation of Contracts for Concurrent Java Programs"
