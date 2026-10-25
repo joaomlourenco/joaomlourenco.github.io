@@ -1,6 +1,7 @@
 ---
 title: "Alexandre Martins Constantino"
 date: 2006-06-01
+linkedin: "https://www.linkedin.com/in/alexandreconstantino/"
 degree: "BSc"
 studentnumber: "12957"
 aliases:

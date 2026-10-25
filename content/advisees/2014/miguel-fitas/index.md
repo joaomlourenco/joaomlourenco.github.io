@@ -1,6 +1,7 @@
 ---
 title: "Miguel Lança Fitas"
 date: 2014-06-01
+linkedin: "https://www.linkedin.com/in/miguel-fitas-42127293/"
 degree: "BSc"
 studentnumber: "25914"
 thesis:

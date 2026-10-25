@@ -1,6 +1,7 @@
 ---
 title: "Olga Patricia Santos Ribeiro"
 date: 2006-06-01
+linkedin: "https://www.linkedin.com/in/olga-ribeiro-35a2b42/"
 degree: "BSc"
 studentnumber: "11599"
 aliases:

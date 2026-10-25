@@ -1,6 +1,7 @@
 ---
 title: "Ricardo Nazir"
 date: 2019-01-01
+linkedin: "https://www.linkedin.com/in/ricardo-nazir-061069240"
 degree: "BSc"
 studentnumber: "48057"
 thesis:

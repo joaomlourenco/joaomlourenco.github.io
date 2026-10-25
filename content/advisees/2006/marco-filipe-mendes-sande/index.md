@@ -1,6 +1,7 @@
 ---
 title: "Marco Filipe Mendes Sande"
 date: 2006-06-01
+linkedin: "https://www.linkedin.com/in/marcosande/"
 degree: "BSc"
 studentnumber: "12831"
 thesis:

@@ -1,6 +1,7 @@
 ---
 title: "Nuno Filipe Estrada de Castro"
 date: 2014-06-01
+linkedin: "https://www.linkedin.com/in/nfecastro/"
 degree: "BSc"
 studentnumber: "34677"
 thesis:

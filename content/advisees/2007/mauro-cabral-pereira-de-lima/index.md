@@ -1,6 +1,7 @@
 ---
 title: "Mauro Cabral Pereira de Lima"
 date: 2007-06-01
+linkedin: "https://www.linkedin.com/in/maurolima/"
 degree: "BSc"
 studentnumber: "12386"
 aliases:

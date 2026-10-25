@@ -1,6 +1,7 @@
 ---
 title: "Rui Pedro Rosa Azevedo"
 date: 2009-09-01
+linkedin: "https://www.linkedin.com/in/rui-azevedo-0b486112/"
 degree: "BSc"
 studentnumber: "5667"
 thesis:

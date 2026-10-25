@@ -1,6 +1,7 @@
 ---
 title: "André de Oliveira Atalaia"
 date: 2020-11-03
+linkedin: "https://www.linkedin.com/in/andredoa/"
 degree: "BSc"
 studentnumber: "51910"
 aliases:

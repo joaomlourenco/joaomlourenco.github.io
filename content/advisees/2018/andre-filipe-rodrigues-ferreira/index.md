@@ -1,6 +1,7 @@
 ---
 title: "André Filipe Rodrigues Ferreira"
 date: 2018-06-01
+linkedin: "https://www.linkedin.com/in/andrefrferreira/"
 degree: "BSc"
 studentnumber: "45242"
 aliases:

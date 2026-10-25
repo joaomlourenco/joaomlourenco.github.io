@@ -1,6 +1,7 @@
 ---
 title: "André Pereira Machado de Ascensão"
 date: 2011-06-01
+linkedin: "https://www.linkedin.com/in/aascensao/"
 degree: "BSc"
 studentnumber: "19005"
 thesis:

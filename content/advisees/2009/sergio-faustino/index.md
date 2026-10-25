@@ -1,6 +1,7 @@
 ---
 title: "Sérgio Manuel Bertão do Carmo Faustino"
 date: 2009-06-01
+linkedin: "https://www.linkedin.com/in/sergio-faustino/"
 degree: "BSc"
 studentnumber: "14686"
 thesis:

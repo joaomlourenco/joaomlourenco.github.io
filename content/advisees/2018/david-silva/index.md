@@ -1,6 +1,7 @@
 ---
 title: "David Dias e Silva"
 date: 2018-06-01
+linkedin: "https://www.linkedin.com/in/david-silva-351236160/"
 degree: "BSc"
 studentnumber: "47778"
 thesis:

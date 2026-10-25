@@ -1,6 +1,7 @@
 ---
 title: "João Manuel Ferreira Oliveira Bras"
 date: 2006-06-01
+linkedin: "https://www.linkedin.com/in/joaobras/"
 degree: "BSc"
 studentnumber: "11669"
 aliases:
