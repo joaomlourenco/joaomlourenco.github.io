@@ -59,7 +59,9 @@ def main():
             continue
         if not re.match(r"^https?://([a-z]{2,3}\.)?linkedin\.com/in/[^/\s]+/?$", url):
             print("SKIP (not a linkedin.com/in/ URL): %s -> %s" % (r.get("Name"), url)); continue
-        f = os.path.join(ROOT, page)
+        # the "Page" column is relative to the site folder (content/advisees/...); content/-relative also accepted
+        f = next((x for x in (os.path.join(ROOT, page), os.path.join(ROOT, "content", page)) if os.path.isfile(x)),
+                 os.path.join(ROOT, page))
         if not os.path.isfile(f):
             print("SKIP (page not found): %s" % page); continue
         t = open(f, encoding="utf-8").read()

@@ -1,6 +1,7 @@
 ---
 title: "António José Rodrigues Mota"
 date: 2010-06-01
+linkedin: "https://www.linkedin.com/in/antoniojosemota/"
 degree: "BSc"
 studentnumber: "21066"
 thesis:

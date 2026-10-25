@@ -1,6 +1,7 @@
 ---
 title: "Rui Pedro Reis Belchior"
 date: 2005-06-01
+linkedin: "https://www.linkedin.com/in/ruibelchior/"
 degree: "BSc"
 studentnumber: "13121"
 aliases:

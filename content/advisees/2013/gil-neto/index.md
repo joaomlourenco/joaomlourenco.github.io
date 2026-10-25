@@ -1,6 +1,7 @@
 ---
 title: "Gil Mateus Neto"
 date: 2013-06-01
+linkedin: "https://www.linkedin.com/in/gil-neto-7b44946a/"
 degree: "BSc"
 studentnumber: "28576"
 thesis:

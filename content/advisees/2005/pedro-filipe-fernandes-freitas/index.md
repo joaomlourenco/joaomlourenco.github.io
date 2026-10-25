@@ -1,6 +1,7 @@
 ---
 title: "Pedro Filipe Fernandes Freitas"
 date: 2005-06-01
+linkedin: "https://www.linkedin.com/in/pedroffreitas/"
 degree: "BSc"
 studentnumber: "12801"
 aliases:

@@ -1,6 +1,7 @@
 ---
 title: "Paulo Alexandre Coelho Ferreira"
 date: 2016-06-01
+linkedin: "https://www.linkedin.com/in/paulo-ferreira-7b27528/"
 degree: "BSc"
 studentnumber: "41870"
 aliases:

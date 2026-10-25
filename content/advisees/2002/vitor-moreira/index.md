@@ -1,6 +1,7 @@
 ---
 title: "Vitor Moreira"
 date: 2002-07-01
+linkedin: "https://www.linkedin.com/in/vitorruimoreira/"
 degree: "BSc"
 thesis:
   title: "DEIPA2 - Deterministic Execution and Interactive Program Analysis"
